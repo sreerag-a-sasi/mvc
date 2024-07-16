@@ -5,22 +5,25 @@ const bcrypt = require('bcryptjs');
 
 exports.addUser = async function (req, res) {
     try {
-        // console.log("body : ", req.body);
+
+        console.log("body : ", req.body);
         let firstName = req.body.firstName;
         let lastName = req.body.lastName;
         let email = req.body.email;
         let password = req.body.password;
-
-        // const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        // function validateEmail(email) {
-        //     if (!emailRegex.test(email)) {
-        //         let response = error_function({
-        //             statusCode: 400,
-        //             message: "invalid email id",
-        //     });
-        //     return res.status(response.statusCode).send(response);
-        // }}
-        // validateEmail();
+        console.log("firstname", req.body.firstName);
+        console.log("lastname",req.body.lastName);
+        console.log("email",req.body.email);
+        console.log("password",req.body.password);        
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailRegex.test(email)) {
+                let response = error_function({
+                    statusCode: 400,
+                    message: "invalid email id",
+            });
+            
+            return res.status(response.statusCode).send(response);
+        }
         const count = await users.countDocuments({ email: req.body.email });
         console.log(`Number of documents with the same email: ${count}`);
         if (count>=1) {
