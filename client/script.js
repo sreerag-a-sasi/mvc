@@ -1,17 +1,58 @@
-    // let firstname = document.getElementById(`firstname`);
-    // let lastname = document.getElementById(`lastname`);
-    // let email = document.getElementById(`email`);
-    // let password = document.getElementById(`password`);
+
+    async function handleSubmit() {
+
+        let data = {
+            firstName: document.getElementById('firstName').value,
+            lastName: document.getElementById('lastName').value,
+            email: document.getElementById('email').value,
+            password: document.getElementById('password').value,
+        };
+        
 
 
-    // let datas = {
-    //     // email : document.getElementById(`email`),
-    //     // password : document.getElementById(`password`),
-    //     firstname,
-    //     lastname,
-    //     email,
-    //     password,
-    // };
+        let json_datas = JSON.stringify(data);
+    
+        console.log("data : ",json_datas);
+
+
+        let response = await fetch('/users',{
+            method : "POST",
+            headers :  {
+                'content-Type' : 'application/json'
+            },
+            body : json_datas,
+        });
+        console.log("response : ", response);
+    
+        let parsed_response = await response.json();
+        console.log("parsed_response : ",parsed_response);
+    
+        let token = parsed_response.data;
+        console.log("token : ",token);
+    
+        if(parsed_response.success && token) { 
+            localStorage.setItem('token',token);
+    
+            alert(parsed_response.message);
+            return;
+        }else {
+            alert(parsed_response.message);
+            return;
+        }
+        //Validate this datas
+
+        //Convert this to an object
+
+        //Convert this object to json
+
+        //Send this json via request to express server (post req)
+        
+        //Take response
+
+        //Display response
+
+
+    }
 
     async function login() {
         console.log("Login ...");
@@ -38,7 +79,7 @@
         let token = parsed_response.data;
         console.log("token : ",token);
     
-        if(parsed_response.success) { 
+        if(parsed_response.success && token) { 
             localStorage.setItem('token',token);
     
             alert(parsed_response.message);

@@ -5,26 +5,42 @@ const bcrypt = require('bcryptjs');
 
 exports.addUser = async function (req, res) {
     try {
-        console.log("body : ", req.body);
+        // console.log("body : ", req.body);
         let firstName = req.body.firstName;
         let lastName = req.body.lastName;
         let email = req.body.email;
         let password = req.body.password;
 
-
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        if (!emailRegex.test(email)) {
+        // const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        // function validateEmail(email) {
+        //     if (!emailRegex.test(email)) {
+        //         let response = error_function({
+        //             statusCode: 400,
+        //             message: "invalid email id",
+        //     });
+        //     return res.status(response.statusCode).send(response);
+        // }}
+        // validateEmail();
+        const count = await users.countDocuments({ email: req.body.email });
+        console.log(`Number of documents with the same email: ${count}`);
+        if (count>=1) {
             let response = error_function({
                 statusCode: 400,
-                message: "Invalid email address",
+                message: "user with this email id already exist",
             });
             return res.status(response.statusCode).send(response);
-        }
+        }else{
+            let salt = bcrypt.genSaltSync(10);
+            console.log("salt : ", salt);
+            let hashed_password = bcrypt.hashSync(password, salt);
+            console.log("hashed_password : ", hashed_password);
+        
 
-        let salt = bcrypt.genSaltSync(10);
-        console.log("salt : ", salt);
-        let hashed_password = bcrypt.hashSync(password, salt);
-        console.log("hashed_password : ", hashed_password);
+
+
+        
+
+
 
         //validation
         //failed : error_response
@@ -40,6 +56,9 @@ exports.addUser = async function (req, res) {
             password: hashed_password,
         });
 
+
+
+
         if (new_user) {
             let response = success_function({
                 statusCode: 201,
@@ -53,7 +72,8 @@ exports.addUser = async function (req, res) {
                 message: "User creation failed",
             });
             return res.status(response.statusCode).send(response);
-        }
+        }}
+        
     } catch (error) {
         console.log("error : ", error);
         //return res.status(400).send("failed");
@@ -64,7 +84,6 @@ exports.addUser = async function (req, res) {
         return res.status(response.statusCode).send(response);
     }
 }
-
 
 
 
