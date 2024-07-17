@@ -6,15 +6,23 @@ const bcrypt = require('bcryptjs');
 exports.addUser = async function (req, res) {
     try {
 
+
         console.log("body : ", req.body);
+
+
         let firstName = req.body.firstName;
         let lastName = req.body.lastName;
         let email = req.body.email;
         let password = req.body.password;
-        console.log("firstname", req.body.firstName);
-        console.log("lastname",req.body.lastName);
-        console.log("email",req.body.email);
-        console.log("password",req.body.password);        
+        
+
+
+        console.log("firstname => ", firstName);
+        console.log("lastname => ",lastName);
+        console.log("email => ",email);
+        console.log("password => ",password); 
+        
+        
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
             if (!emailRegex.test(email)) {
                 let response = error_function({

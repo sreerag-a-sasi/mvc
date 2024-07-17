@@ -1,6 +1,5 @@
 
     async function handleSubmit() {
-
         let data = {
             firstName: document.getElementById('firstName').value,
             lastName: document.getElementById('lastName').value,
@@ -9,10 +8,15 @@
         };
         
 
+        console.log("firstname :",firstName);
+        console.log("lastname :",lastName);
+        console.log("email :",email);
+        console.log("password :",password);
 
-        let json_datas = JSON.stringify(data);
+
+        let json_data = JSON.stringify(data);
     
-        console.log("data : ",json_datas);
+        console.log("data : ",json_data);
 
 
         let response = await fetch('/users',{
@@ -20,7 +24,7 @@
             headers :  {
                 'content-Type' : 'application/json'
             },
-            body : json_datas,
+            body : json_data,
         });
         console.log("response : ", response);
     

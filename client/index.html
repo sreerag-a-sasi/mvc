@@ -13,7 +13,7 @@
     <div id="containerOne">
       <div class="form">
         <h1>Create Your Account</h1>
-        <form action="/users" method="POST" id="userDataForm" onsubmit="handleSubmit()">
+        <form id="userDataForm" onsubmit="return handleSubmit()">
           <div><input type="text" placeholder="Enter Your First Name :" name="firstname" id="firstName"></div>
           <div><input type="text" placeholder="Enter Your Last Name :" name="lastname" id="lastName"></div>
           <div><input type="email" placeholder="Enter Your email :" name="email" id="email"></div>
