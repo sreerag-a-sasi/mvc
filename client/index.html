@@ -11,9 +11,23 @@
 <body>
   <div id="top">
     <div id="containerOne">
-      <div id="container">
-        
-      </div>
+      <!-- <div id="container">
+        <div class="list"><a href="">Login</a></div>
+        <div class="list"><a href="">Create new</a></div>
+        <div class="list"><a href="">Get Details</a></div>
+        <div class="list"><a href="">Update Data</a></div>
+      </div> -->
+      <nav>
+        <div class="wrapper">
+          <div class="logo"><a href="#">Admin</a></div>
+          <ul class="nav-links">
+            <li><a href="#">Login</a></li>
+            <li><a href="#">Create New</a></li>
+            <li><a href="#">Get Details</a></li>
+            <li><a href="#">Update</a></li>
+          </ul>
+        </div>
+      </nav>
       <div class="form">
         <h1>Create Your Account</h1>
         <form id="userDataForm" onsubmit="return handleSubmit()">
@@ -23,7 +37,7 @@
           <div><input type="password" placeholder="Enter Your Password :" name="password" id="password" required></div>
           <div><button type="submit" id="btn">Create</button></div>
         </form>
-      </div>
+    </div>
       <script src="script.js"></script>
 </body>
 
