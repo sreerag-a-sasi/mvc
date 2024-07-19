@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
+const access_control = require('../utils/access-control').access_control;
 
 router.get('/test', (req,res) => {
     res.status(200).send("success");
