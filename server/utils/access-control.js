@@ -2,9 +2,10 @@ let error_function = require('./response-handler').error_function;
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const user_types = require('../db/models/user_types');
+const control_data = require('./control-data.json');
 dotenv.config();
 
-exports.access_control = async function (req, res, next) {
+exports.access_control = async function (access_types, req, res, next) {
     try {
         console.log("reached access control....");
         const authHeader = req.headers['authorization'];
@@ -54,15 +55,35 @@ exports.access_control = async function (req, res, next) {
                     console.log("user_id : ",user_id);
 
                     if (user_id) {
-                        let user = await users.findOne({_id : user_id});
+                        let user = await users.findOne({_id : user_id}).populate('user_type');
                         console.log("user :",user);
 
-                        if (user) {
+                        let user_type = user.user_type.user_type;
+                        console.log("uaer_type : ", user_type);
+
+                        //allowed user_types
+                        let allowed = access_types.split(',').map((e) => control_data(e));
+                        console.log("allowed : ", allowed);
+
+                        if (user && allowed.includes(user_type)) {
+                            console.log("allowed user...")
                             next(); //jupmp to next middleware
+                        }else if (!allowed.includes(user_type)) {
+                            let response = error_function({
+                                statusCode : 400,
+                                message : "Not allowed",
+                            });
+                            return res.status(response.statusCode).send(response);
+                        }else if(!user) {
+                            let response = error_function({
+                                statusCode : 404,
+                                message : "user not fount",
+                            });
+                            return res.status(response.statusCode).send(response);
                         }else {
                             let response = error_function({
                                 statusCode : 400,
-                                message : "User not found",
+                                message : "something went wrong",
                             });
                             return res.status(response.statusCode).send(response);
                         }

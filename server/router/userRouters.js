@@ -3,10 +3,17 @@ const router = express.Router();
 const userController = require('../controllers/userController');
 const access_control = require('../utils/access-control').access_control;
 
+
+function setAccessControl(access_types) {
+    return (req, res, next) => {
+        access_control(access_types, req, res, next);
+    }
+}
+
 router.get('/test', (req,res) => {
     res.status(200).send("success");
 });
-router.post('/users', userController.addUser);
+router.post('/users',setAccessControl('1,2'), userController.addUser);
 router.put('/users/:id', userController.updateUser);
 router.get('/users', userController.getUser);
 router.delete('/users/:id', userController.deleteUser);
