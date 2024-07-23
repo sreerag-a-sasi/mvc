@@ -18,7 +18,7 @@ exports.login = async function ( req, res) {
 
         //checking user credentials 
         let user = await users.findOne({email});
-        console.log("User : ",users);
+        console.log("User : ",user);
 
         if(user) { 
             console.log("User found");

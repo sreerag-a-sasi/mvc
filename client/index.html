@@ -23,12 +23,13 @@
           </nav>
           <div class="form">
             <h1>Login</h1>
-            <form id="userLogin" onsubmit="return handleLogin()">
+            <form id="userLogin" onsubmit="return login(event)">
               <div><input type="email" placeholder="Enter The email :" name="email" id="email"></div>
               <div><input type="password" placeholder="Enter The Password :" name="password" id="password" required></div>
               <div><button type="submit" id="btn">Login</button></div>
             </form>
           </div>
     </div>
+    <script src="script.js"></script>
 </body>
 </html>

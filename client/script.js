@@ -58,12 +58,15 @@
 
     }
 
-    async function login() {
+    async function login(event) {
+        event.preventDefault();
         console.log("Login ...");
     
         let datas = {
-            email : 'bunny@gmail.com',
-            password : 'bunny#123',
+            // email : 'bunny@gmail.com',
+            // password : 'bunny#123',
+            email: document.getElementById('email').value,
+            password: document.getElementById('password').value,
         };
     
         let json_datas = JSON.stringify(datas);
