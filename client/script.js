@@ -84,12 +84,13 @@
         console.log("parsed_response : ",parsed_response);
     
         let token = parsed_response.data;
-        console.log("token : ",token);
+        console.log("token : ",token.data);
     
         if(parsed_response.success && token) { 
-            localStorage.setItem('token',token);
+            localStorage.setItem('token',token.data);
     
             alert(parsed_response.message);
+            window.location.href= "admin.html";
             return;
         }else {
             alert(parsed_response.message);
