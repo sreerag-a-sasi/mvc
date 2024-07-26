@@ -99,3 +99,14 @@
     }
 
 
+    // async function details(event) { 
+    //     // event.preventDefault();
+    //     console.log("details");
+
+    //     let response = await fetch('/details',{
+    //         method : "GET",
+    //         headers :  {
+    //             'content-Type' : 'application/json'
+    //         },
+    // });
+    // console.log("response: ", response);

@@ -56,3 +56,24 @@ exports.login = async function ( req, res) {
         console.log("error : ",error);
     }
 }
+
+
+
+
+
+
+
+// exports.details = async function ( req, res) {
+//     try {
+//         req.body;
+
+//         let response = success_function({
+//             statusCode : 200,
+//             data : token,
+//             message : "Login successful",
+//         });
+//         return res.status(response.statusCode).send(response);
+//     } catch (error) {
+//         console.log("error : ",error);
+//     }
+// }
