@@ -8,7 +8,7 @@ const authRoutes = require('./router/authRouters');
 
 
 //database connectiongffgfdafds fdfgdgffds
-conn();
+conn();//5565623
 app.use(express.json());
 
 app.use('/',express.static(__dirname + '/../client'));
