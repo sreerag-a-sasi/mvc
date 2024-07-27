@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="nav.css">
+  <link rel="html-page" href="login.html">
+</head>
+
+<body>
+  <nav>
+    <div class="wrapper">
+      <div class="logo">
+        <a href="#">Admin</a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="login.html">Log out</a></li>
+        <!-- <li><a href="#">Create New</a></li> -->
+        <li><a href="#">Get Details</a></li>
+        <li><a href="#">Update</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="form">
+    <h1>Add New Employee</h1>
+    <form id="userDataForm" onsubmit="return handleSubmit()">
+      <div><input type="text" placeholder="Enter The First Name :" name="firstname" id="firstName"></div>
+      <div><input type="text" placeholder="Enter The Last Name :" name="lastname" id="lastName"></div>
+      <div><input type="email" placeholder="Enter The email :" name="email" id="email"></div>
+      <div><input type="password" placeholder="Enter The Password :" name="password" id="password" required></div>
+      <div><button type="submit" id="btn">Add</button></div>
+    </form>
+  </div>
+  <script src="script.js"></script>
+</body>
+
+</html>
