@@ -4,6 +4,7 @@ const userController = require('../controllers/userController');
 const access_control = require('../utils/access-control').access_control;
 
 
+//Function that returns a middleware
 function setAccessControl(access_types) {
     return (req, res, next) => {
         access_control(access_types, req, res, next);
