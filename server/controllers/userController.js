@@ -236,7 +236,19 @@ exports.deleteUser = async function (req, res) {
 
 exports.uniqueUser = async function (req, res) {
     try {
-        let id = req.params.id;
+
+        let userData = req.body.userData;
+
+        if(userData) {
+            let response = success_function({
+                statusCode : 200,
+                data : userData,
+            });
+            return res.status(response.statusCode).send(response);
+        }else {
+
+        
+        let id = req.body.id;
         console.log("id : ", id);
 
 
@@ -257,6 +269,7 @@ exports.uniqueUser = async function (req, res) {
             });
             return res.status(response.statusCode).send(response);
         }
+    }
     } catch (error) {
         console.log("error : ", error);
         //return res.status(400).send("failed");

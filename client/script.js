@@ -110,3 +110,11 @@
     //         },
     // });
     // console.log("response: ", response);
+
+
+    function getLoginUserData() {
+        //get token from localstorage
+        //Make a request to the server route or api with bearer token passed in req headers as authorization token
+        //Get response (user datas)
+        //Show datas
+    }

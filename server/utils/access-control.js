@@ -2,11 +2,14 @@ let error_function = require('./response-handler').error_function;
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const user_types = require('../db/models/user_types');
+const users = require('../db/models/users');
 const control_data = require('./control-data.json');
 dotenv.config();
 
 exports.access_control = async function (access_types, req, res, next) {
     try {
+
+
         console.log("reached access control....");
         const authHeader = req.headers['authorization'];
         console.log("authHeader  : ",authHeader);
@@ -53,6 +56,7 @@ exports.access_control = async function (access_types, req, res, next) {
                 }else {
                     let user_id = decoded.user_id;
                     console.log("user_id : ",user_id);
+                    req.body.user_id = user_id;//Writing request to add user_id decoded from token (ie login user id)
 
                     if (user_id) {
                         let user = await users.findOne({_id : user_id}).populate('user_type');
@@ -61,6 +65,19 @@ exports.access_control = async function (access_types, req, res, next) {
                         let user_type = user.user_type.user_type;
                         console.log("uaer_type : ", user_type);
 
+                        if(access_types === '*') {
+
+                            let id = req.query.id;
+                            if(id) {
+                                req.body.id = id;
+                                next();
+                            }else {
+                                req.body.userData = user;
+                                next();
+                            }
+
+                        }else {
+                            
                         //allowed user_types
                         let allowed = access_types.split(',').map((e) => control_data(e));
                         console.log("allowed : ", allowed);
@@ -87,6 +104,7 @@ exports.access_control = async function (access_types, req, res, next) {
                             });
                             return res.status(response.statusCode).send(response);
                         }
+                    }
                     }else{
                         let response = error_function({
                             statusCode : 400,
