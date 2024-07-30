@@ -167,7 +167,7 @@ async function getLoginUserData() {
                   <td><input type="text" id='name-${res.data[i]._id}' value=${firstName} disabled="true" placeholder="name"></td>
                   <td><input type="text" id='username-${res.data[i]._id}' value=${lastName} disabled=true placeholder="username"></td>
                   <td><input type="email" id='email-${res.data[i]._id}' value=${email} disabled=true></td>
-                  <td><input type="password" id='password-${res.data[i]._id}' value=${password} disabled=true></td>
+                //   <td><input type="password" id='password-${res.data[i]._id}' value=${password} disabled=true></td>
                   <td><button onclick= "handleEdit('${res.data[i]._id}')">Edit</button></td>
                   <td><button onclick= "handleSave('${res.data[i]._id}')">Save</button></td>
                   <td><button onclick= "remove('${res.data[i]._id}')">remove user</button></td>
