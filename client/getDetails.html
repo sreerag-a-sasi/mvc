@@ -1,37 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Current Users</title>
-    <link rel="stylesheet" href="nav.css">
-    <link rel="html-page" href="index.html">
-    <link rel="html-page" href="admin.html">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Current Users</title>
+  <link rel="stylesheet" href="nav.css">
+  <link rel="html-page" href="index.html">
+  <link rel="html-page" href="admin.html">
+  <style>
+    table {
+      width: 100%;
+      min-height: 100vh;
+      height: auto;
+      background-color: rgb(84, 84, 86);
+      align-content: center;
+      align-items: center;
+    }
+
+    td>.in {
+      width: 100%;
+      min-width: 200px;
+      height: 40px;
+      background-color: white;
+      border: 1px solid red;
+      border-radius: 8px;
+      padding-left: 20px;
+    }
+
+    button.btn {
+      margin: 0px auto;
+      width: 150px;
+      height: 30px;
+      border: 0px;
+      border-radius: 10px;
+      background-color: greenyellow;
+    }
+
+  </style>
 </head>
-<body onload = "getLoginUserData()">
-    <nav>
-        <div class="wrapper">
-          <div class="logo"><a href="#">Details</a></div>
-          <ul class="nav-links">
-            <li><a href="#">Log out</a></li>
-            <!-- <li><a href="#">Create New</a></li> -->
-            <!-- <li><a href="#">Get Details</a></li> -->
-            <li><a href="#">Update</a></li>
-          </ul>
-        </div>
-      </nav>
-    <table>
-        <!-- <div><button type="submit" id="btn" onsubmit="return details()">Login</button></div> -->
-      <thead>
-        <tr>
-          <th>name</th>
-          <th>username</th>
-          <th>email</th>
-          <!-- <th>password</th> -->
-        </tr>
-      </thead>
-      <tbody id="dataContainer"></tbody>
-    </table>
-    <script src="script.js"></script>
-  </body>
+
+<body onload="getLoginUserData()">
+  <nav>
+    <div class="wrapper">
+      <div class="logo"><a href="#">Details</a></div>
+      <ul class="nav-links">
+        <li><a href="#">Log out</a></li>
+        <!-- <li><a href="#">Create New</a></li> -->
+        <!-- <li><a href="#">Get Details</a></li> -->
+        <li><a href="#">Update</a></li>
+      </ul>
+    </div>
+  </nav>
+  <table>
+    <!-- <div><button type="submit" id="btn" onsubmit="return details()">Login</button></div> -->
+    <thead>
+      <tr>
+        <th>name</th>
+        <th>username</th>
+        <th>email</th>
+        <!-- <th>password</th> -->
+      </tr>
+    </thead>
+    <tbody id="dataContainer"></tbody>
+  </table>
+  <script src="script.js"></script>
+</body>
+
 </html>

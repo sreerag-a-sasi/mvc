@@ -164,12 +164,12 @@ async function getLoginUserData() {
                 rows +
                 `
         <tr>
-                  <td><input type="text" id='name-${res.data[i]._id}' value=${firstName} disabled="true" placeholder="name"></td>
-                  <td><input type="text" id='username-${res.data[i]._id}' value=${lastName} disabled=true placeholder="username"></td>
-                  <td><input type="email" id='email-${res.data[i]._id}' value=${email} disabled=true></td>
-                  <td><button onclick= "handleEdit('${res.data[i]._id}')">Edit</button></td>
-                  <td><button onclick= "handleSave('${res.data[i]._id}')">Save</button></td>
-                  <td><button onclick= "remove('${res.data[i]._id}')">remove user</button></td>
+                  <td><input class="in" type="text" id='name-${res.data[i]._id}' value="${firstName}" disabled="true" placeholder="name"></td>
+                  <td><input class="in" type="text" id='username-${res.data[i]._id}' value="${lastName}" disabled=true placeholder="username"></td>
+                  <td><input class="in" type="email" id='email-${res.data[i]._id}' value="${email}" disabled=true></td>
+                  <td><button class="btn" onclick= "handleEdit('${res.data[i]._id}')">Edit</button></td>
+                  <td><button class="btn" onclick= "handleSave('${res.data[i]._id}')">Save</button></td>
+                  <td><button class="btn" onclick= "remove('${res.data[i]._id}')">remove user</button></td>
         </tr>
             `;
         }
