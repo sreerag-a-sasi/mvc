@@ -63,7 +63,7 @@ exports.access_control = async function (access_types, req, res, next) {
                         console.log("user :",user);
 
                         let user_type = user.user_type.user_type;
-                        console.log("uaer_type : ", user_type);
+                        console.log("user_type : ", user_type);
 
                         if(access_types === '*') {
 

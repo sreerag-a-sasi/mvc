@@ -5,7 +5,7 @@ module.exports = {
 
       return models.user_types.insertMany([
         {
-          _id : "6697895aa8d99d424db23cb6",
+          _id : "66b0bf59b5d83c8f0b66fed4",
           user_type : "Admin"
         },
         {
@@ -25,7 +25,7 @@ module.exports = {
         {
           _id: {
             $in : [
-              "6697895aa8d99d424db23cb6",
+              "66b0bf59b5d83c8f0b66fed4",
               "668bb6fdfaa2016df7cef426",
             ]
           }

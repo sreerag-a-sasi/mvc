@@ -1,10 +1,73 @@
 
-async function handleSubmit() {
+// async function handleSubmit() {
 
-    const token = localStorage.getItem('token'); // Retrieve the token
-    console.log("Access token : ", token);
+//     const token = localStorage.getItem('token'); // Retrieve the token
+//     console.log("Access token : ", token);
 
-    console.log("new user ...");
+//     console.log("new user ...");
+//     let data = {
+//         firstName: document.getElementById('firstName').value,
+//         lastName: document.getElementById('lastName').value,
+//         email: document.getElementById('email').value,
+//         password: document.getElementById('password').value,
+//     };
+
+
+//     console.log("firstname :", firstName.value);
+//     console.log("lastname :", lastName.value);
+//     console.log("email :", email.value);
+//     console.log("password :", password.value);
+
+
+//     let json_data = JSON.stringify(data);
+
+//     console.log("data : ", json_data);
+
+
+//     let response = await fetch('/users', {
+//         method: "POST",
+//         headers: {
+//             'content-Type': 'application/json',
+//             'Authorization' : `Bearer ${token}`
+//         },
+//         body: json_data,
+//     });
+//     console.log("response : ", response);
+
+//     let parsed_response = await response.json();
+//     console.log("parsed_response : ", parsed_response);
+
+
+
+
+//     // let token = parsed_response.data;
+//     console.log("token : ", token);
+
+//     if (parsed_response.success && token) {
+//         localStorage.setItem('token', token);
+
+//         alert(parsed_response.message);
+//         return;
+//     } else {
+//         alert(parsed_response.message);
+//         return;
+//     }
+//     //Validate this datas
+
+//     //Convert this to an object
+
+//     //Convert this object to json
+
+//     //Send this json via request to express server (post req)
+
+//     //Take response
+
+//     //Display response
+
+
+// }
+
+async function addUser() {
     let data = {
         firstName: document.getElementById('firstName').value,
         lastName: document.getElementById('lastName').value,
@@ -24,11 +87,10 @@ async function handleSubmit() {
     console.log("data : ", json_data);
 
 
-    let response = await fetch('/users', {
+    let response = fetch('/users', {
         method: "POST",
         headers: {
-            'content-Type': 'application/json',
-            'Authorization' : `Bearer ${token}`
+            'content-Type': 'application/json'
         },
         body: json_data,
     });
@@ -37,10 +99,7 @@ async function handleSubmit() {
     let parsed_response = await response.json();
     console.log("parsed_response : ", parsed_response);
 
-
-
-
-    // let token = parsed_response.data;
+    let token = parsed_response.data;
     console.log("token : ", token);
 
     if (parsed_response.success && token) {
@@ -66,6 +125,11 @@ async function handleSubmit() {
 
 
 }
+
+
+
+
+
 
 async function login(event) {
     event.preventDefault();
