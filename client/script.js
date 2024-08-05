@@ -1,5 +1,10 @@
 
 async function handleSubmit() {
+
+    const token = localStorage.getItem('token'); // Retrieve the token
+    console.log("Access token : ", token);
+
+    console.log("new user ...");
     let data = {
         firstName: document.getElementById('firstName').value,
         lastName: document.getElementById('lastName').value,
@@ -8,10 +13,10 @@ async function handleSubmit() {
     };
 
 
-    console.log("firstname :", firstName);
-    console.log("lastname :", lastName);
-    console.log("email :", email);
-    console.log("password :", password);
+    console.log("firstname :", firstName.value);
+    console.log("lastname :", lastName.value);
+    console.log("email :", email.value);
+    console.log("password :", password.value);
 
 
     let json_data = JSON.stringify(data);
@@ -22,7 +27,8 @@ async function handleSubmit() {
     let response = await fetch('/users', {
         method: "POST",
         headers: {
-            'content-Type': 'application/json'
+            'content-Type': 'application/json',
+            'Authorization' : `Bearer ${token}`
         },
         body: json_data,
     });
@@ -31,7 +37,10 @@ async function handleSubmit() {
     let parsed_response = await response.json();
     console.log("parsed_response : ", parsed_response);
 
-    let token = parsed_response.data;
+
+
+
+    // let token = parsed_response.data;
     console.log("token : ", token);
 
     if (parsed_response.success && token) {
@@ -180,11 +189,6 @@ async function getLoginUserData() {
       }
     // console.log("response : ", JSON.stringify(response));
     //Make a request to the server route or api with bearer token passed in req headers as authorization token
-
-
-
-
     //Get response (user datas)
     //Show datas
 }
- //   <td><input type="password" id='password-${res.data[i]._id}' value=${password} disabled=true></td>
