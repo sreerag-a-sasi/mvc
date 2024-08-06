@@ -8,8 +8,6 @@ dotenv.config();
 
 exports.access_control = async function (access_types, req, res, next) {
     try {
-
-
         console.log("reached access control....");
         const authHeader = req.headers['authorization'];
         console.log("authHeader  : ",authHeader);
@@ -17,7 +15,7 @@ exports.access_control = async function (access_types, req, res, next) {
         //validate if authHeader not found
         if(!authHeader) {
             let response = error_function({
-                statuscode : 400,
+                statusCode : 400,
                 message : "Not allowed",
             });
             return res.status(response.statusCode).send(response);
@@ -79,12 +77,12 @@ exports.access_control = async function (access_types, req, res, next) {
                         }else {
                             
                         //allowed user_types
-                        let allowed = access_types.split(',').map((e) => control_data(e));
+                        let allowed = access_types.split(',').map((e) => control_data[e]);
                         console.log("allowed : ", allowed);
 
                         if (user && allowed.includes(user_type)) {
                             console.log("allowed user...")
-                            next(); //jupmp to next middleware
+                            next(); //jump to next middleware
                         }else if (!allowed.includes(user_type)) {
                             let response = error_function({
                                 statusCode : 400,

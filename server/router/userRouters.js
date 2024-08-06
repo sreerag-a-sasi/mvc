@@ -14,10 +14,10 @@ function setAccessControl(access_types) {
 router.get('/test', (req,res) => {
     res.status(200).send("success");
 });
-router.post('/users',setAccessControl('1,2'), userController.addUser);
-router.put('/users/:id', userController.updateUser);
-router.get('/users', userController.getUser);
-router.delete('/users/:id', userController.deleteUser);
+router.post('/users',setAccessControl('1'), userController.addUser);
+router.put('/users/:id', setAccessControl('1'), userController.updateUser);
+router.get('/users', setAccessControl('1'), userController.getUser);
+router.delete('/users/:id', setAccessControl('1'), userController.deleteUser);
 router.get('/users',setAccessControl('*'), userController.uniqueUser);
 // router.get('/login',userController.getUser);
 

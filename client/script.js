@@ -67,7 +67,15 @@
 
 // }
 
-async function addUser() {
+async function handleSubmit(event) {
+    event.preventDefault();
+
+    const token = localStorage.getItem('token');
+    if(!token){
+        alert("you must be logged in to continue this process..");
+        return;
+    }
+    console.log("new ...");
     let data = {
         firstName: document.getElementById('firstName').value,
         lastName: document.getElementById('lastName').value,
@@ -87,10 +95,11 @@ async function addUser() {
     console.log("data : ", json_data);
 
 
-    let response = fetch('/users', {
+    let response = await fetch('/users', {
         method: "POST",
         headers: {
-            'content-Type': 'application/json'
+            'content-Type': 'application/json',
+            'Authorization' : `Bearer ${token}`
         },
         body: json_data,
     });
@@ -99,18 +108,14 @@ async function addUser() {
     let parsed_response = await response.json();
     console.log("parsed_response : ", parsed_response);
 
-    let token = parsed_response.data;
-    console.log("token : ", token);
-
-    if (parsed_response.success && token) {
-        localStorage.setItem('token', token);
-
+    if(parsed_response.success){
         alert(parsed_response.message);
         return;
-    } else {
+    }else{
         alert(parsed_response.message);
         return;
     }
+    
     //Validate this datas
 
     //Convert this to an object
