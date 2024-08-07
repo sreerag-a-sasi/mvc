@@ -2,26 +2,24 @@ const success_function = require('../utils/response-handler').success_function;
 const error_function = require('../utils/response-handler').error_function;
 const users = require('../db/models/users');
 const bcrypt = require('bcryptjs');
+const fileUpload = require('../utils/file-upload').fileUpload;
+
 
 exports.addUser = async function (req, res) {
     try {
-
-
         console.log("body : ", req.body);
-
 
         let firstName = req.body.firstName;
         let lastName = req.body.lastName;
         let email = req.body.email;
         let password = req.body.password;
-        
+        let image = req.body.image;
 
-
-        console.log("firstname => ", firstName);
-        console.log("lastname => ",lastName);
-        console.log("email => ",email);
-        console.log("password => ",password); 
-        
+        console.log("firstname : ", firstName);
+        console.log("lastname : ",lastName);
+        console.log("email : ",email);
+        console.log("password : ",password); 
+        console.log("image : ", image);
         
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
             if (!emailRegex.test(email)) {
@@ -45,14 +43,12 @@ exports.addUser = async function (req, res) {
             console.log("salt : ", salt);
             let hashed_password = bcrypt.hashSync(password, salt);
             console.log("hashed_password : ", hashed_password);
-        
 
-
-
-        
-
-
-
+            let img_path;
+            if(image && image!== "removed"){
+                img_path = await fileUpload(image, "users");
+            }
+            console.log("img_path : ", img_path);
         //validation
         //failed : error_response
         //success : Continue 
@@ -65,10 +61,9 @@ exports.addUser = async function (req, res) {
             lastName,
             email,
             password: hashed_password,
+            image,
+            user_type : "668bb6fdfaa2016df7cef426",
         });
-
-
-
 
         if (new_user) {
             let response = success_function({

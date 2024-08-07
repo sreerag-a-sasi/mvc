@@ -9,7 +9,10 @@ const authRoutes = require('./router/authRouters');
 
 //database connectiongffgfdafds fdfgdgffds 123456 7891011122345
 conn();//Some update 11111
-app.use(express.json());
+app.use(express.json({limit : '100mb'}));
+
+//parsed JSON Data
+app.use(express.urlencoded({extended : false}));
 
 app.use('/',express.static(__dirname + '/../client'));
 //userRoutes
