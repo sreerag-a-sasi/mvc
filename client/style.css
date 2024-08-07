@@ -3,12 +3,6 @@
     padding: 0%;
     box-sizing: border-box;
 }
-
-
-
-
-
-
 .form {
     width: 100%;
     min-height: 100vh;
@@ -18,7 +12,6 @@
     align-content: center;
     padding-top: 20px;
 }
-
 input {
     width: 50%;
     min-width: 200px;
@@ -28,7 +21,6 @@ input {
     border-radius: 8px;
     padding-left: 20px;
 }
-
 button {
     width: 150px;
     height: 30px;
@@ -36,14 +28,12 @@ button {
     border-radius: 10px;
     background-color: #57ef83;
 }
-
 form>div {
     display: flex;
     padding: 10px 0px;
     width: 100%;
     justify-content: center;
 }
-
 h1 {
     font-size: 40px;
     font-weight: 600;

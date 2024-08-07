@@ -71,7 +71,7 @@ async function handleSubmit(event) {
     event.preventDefault();
 
     const token = localStorage.getItem('token');
-    if(!token){
+    if (!token) {
         alert("you must be logged in to continue this process..");
         return;
     }
@@ -99,7 +99,7 @@ async function handleSubmit(event) {
         method: "POST",
         headers: {
             'content-Type': 'application/json',
-            'Authorization' : `Bearer ${token}`
+            'Authorization': `Bearer ${token}`
         },
         body: json_data,
     });
@@ -108,14 +108,14 @@ async function handleSubmit(event) {
     let parsed_response = await response.json();
     console.log("parsed_response : ", parsed_response);
 
-    if(parsed_response.success){
+    if (parsed_response.success) {
         alert(parsed_response.message);
         return;
-    }else{
+    } else {
         alert(parsed_response.message);
         return;
     }
-    
+
     //Validate this datas
 
     //Convert this to an object
@@ -210,14 +210,14 @@ async function getLoginUserData() {
         method: "GET",
         headers: {
             'content-Type': 'application/json',
-            'Authorization' : `Bearer ${token}`
+            'Authorization': `Bearer ${token}`
         },
     });
 
     if (response.ok) {
         const data = await response.json();
         console.log('User data:', data.data);
-  
+
 
 
 
@@ -225,14 +225,14 @@ async function getLoginUserData() {
 
 
         let res = data.data;
-        console.log("res : ",res.data);
+        console.log("res : ", res.data);
 
         let dataContainer = document.getElementById("dataContainer");
-    
+
         let rows = '';
         firstName1 = res.data[0].firstName;
         console.log("firstname : ", firstName1);
-    
+
         for (let i = 0; i < res.data.length; i++) {
             let firstName = res.data[i].firstName ? res.data[i].firstName : "Null";
             let lastName = res.data[i].lastName ? res.data[i].lastName : "Null";
@@ -253,9 +253,9 @@ async function getLoginUserData() {
         }
         console.log("rows : ", rows);
         dataContainer.innerHTML = rows;
-      } else {
+    } else {
         console.error('Error fetching user data:', response.status);
-      }
+    }
     // console.log("response : ", JSON.stringify(response));
     //Make a request to the server route or api with bearer token passed in req headers as authorization token
     //Get response (user datas)
