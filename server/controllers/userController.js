@@ -61,7 +61,7 @@ exports.addUser = async function (req, res) {
             lastName,
             email,
             password: hashed_password,
-            image,
+            image : img_path,
             user_type : "668bb6fdfaa2016df7cef426",
         });
 
@@ -243,7 +243,7 @@ exports.uniqueUser = async function (req, res) {
         }else {
 
         
-        let id = req.body.id;
+        let id = req.params.id;
         console.log("id : ", id);
 
 
