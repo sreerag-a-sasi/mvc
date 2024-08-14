@@ -11,14 +11,14 @@ async function handleSubmit(event) {
         firstName: document.getElementById('firstName').value,
         lastName: document.getElementById('lastName').value,
         email: document.getElementById('email').value,
-        password: document.getElementById('password').value,
+        // password: document.getElementById('password').value,
     };
 
 
     console.log("firstname :", firstName.value);
     console.log("lastname :", lastName.value);
     console.log("email :", email.value);
-    console.log("password :", password.value);
+    // console.log("password :", password.value);
 
 
     let json_data = JSON.stringify(data);
