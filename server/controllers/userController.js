@@ -4,6 +4,7 @@ const users = require('../db/models/users');
 const bcrypt = require('bcryptjs');
 const fileUpload = require('../utils/file-upload').fileUpload;
 const set_password_template =require("../utils/set-password").resetPassword;
+const resetPassword = require("../utils/resetpassword").resetPassword;
 const sendEmail = require("../utils/send-email").sendEmail;
 
 exports.addUser = async function (req, res) {
@@ -35,7 +36,7 @@ exports.addUser = async function (req, res) {
         }
 
         var randomPassword = generateRandomPassword(12);
-        console.log(randomPassword);
+        // console.log("random password" ,randomPassword);
 
 
         let password = randomPassword;
@@ -43,11 +44,11 @@ exports.addUser = async function (req, res) {
 
 /////////////////////////////////////////////////////////////////////////////////
 
-        console.log("firstname : ", firstName);
-        console.log("lastname : ", lastName);
-        console.log("email : ", email);
-        console.log("password : ", password);
-        console.log("image : ", image);
+        // console.log("firstname : ", firstName);
+        // console.log("lastname : ", lastName);
+        // console.log("email : ", email);
+        // console.log("password : ", password);
+        // console.log("image : ", image);
 
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         if (!emailRegex.test(email)) {
@@ -103,6 +104,10 @@ exports.addUser = async function (req, res) {
                     );
 
                     let send = await sendEmail(email, "Update Password", email_template);
+
+
+
+
                     //send response
                     // message = message + " and login details send to official email";
 

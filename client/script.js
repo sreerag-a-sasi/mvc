@@ -88,17 +88,17 @@ async function login(event) {
         body: json_datas,
     });
     console.log("response : ", response);
-
+    
     let parsed_response = await response.json();
     console.log("parsed_response : ", parsed_response);
+
+    alert(parsed_response.message);
 
     let token = parsed_response.data;
     console.log("token : ", token.data);
 
     if (parsed_response.success && token) {
         localStorage.setItem('token', token.data);
-
-        alert(parsed_response.message);
         window.location.href = "getDetails.html";
         return;
     } else {
@@ -162,7 +162,6 @@ async function getLoginUserData() {
 
         let rows = '';
         firstName1 = res.data[0].firstName;
-        console.log("firstname : ", firstName1);
 
         for (let i = 0; i < res.data.length; i++) {
             let firstName = res.data[i].firstName ? res.data[i].firstName : "Null";
