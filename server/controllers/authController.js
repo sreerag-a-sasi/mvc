@@ -69,14 +69,14 @@ exports.forgotPasswordController = async function (req, res) {
     if (email) {
       let user = await users.findOne({ email: email });
       if (user) {
-        let reset_token = jwt.sign({ user_id: user._id }, process.env.PRIVATE_KEY, { expiresIn: "10m" });
+        let reset_token = jwt.sign({ user_id: user._id }, process.env.PRIVATE_KEY, { expiresIn: "10d" });
         let data = await users.updateOne(
           { email: email },
           { $set: { password_token: reset_token } }
         );
         if (data.matchedCount === 1 && data.modifiedCount == 1) {
           let reset_link = `${process.env.FRONTEND_URL}/reset-password?token=${reset_token}`;
-          let email_template = await resetPassword(user.first_name, reset_link);
+          let email_template = await resetPassword(user.firstName, reset_link);
           sendEmail(email, "Forgot password", email_template);
           let response = success_function({
             status: 200,
@@ -147,7 +147,9 @@ exports.passwordResetController = async function (req, res) {
     decoded = jwt.decode(token);
     //console.log("user_id : ", decoded.user_id);
     //console.log("Token : ", token);
-    let user = await users.findOne({$and: [{ _id: decoded.user_id }, { password_token: token }],});
+    let user = await users.findOne({
+      $and: [{ _id: decoded.user_id }, { password_token: token }],
+    });
     if (user) {
       let salt = bcrypt.genSaltSync(10);
       let password_hash = bcrypt.hashSync(password, salt);
@@ -186,12 +188,7 @@ exports.passwordResetController = async function (req, res) {
     if (process.env.NODE_ENV == "production") {
       let response = error_function({
         status: 400,
-        message: error
-          ? error.message
-            ? error.message
-            : error
-          : "Something went wrong",
-      });
+        message: error? error.message? error.message: error: "Something went wrong",});
 
       res.status(response.statusCode).send(response);
       return;
@@ -202,6 +199,8 @@ exports.passwordResetController = async function (req, res) {
     }
   }
 };
+
+
 
 
 // exports.details = async function ( req, res) {
