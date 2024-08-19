@@ -2,6 +2,7 @@ const success_function = require('../utils/response-handler').success_function;
 const error_function = require('../utils/response-handler').error_function;
 const users = require('../db/models/users');
 const bcrypt = require('bcryptjs');
+const jwt = require("jsonwebtoken");
 const fileUpload = require('../utils/file-upload').fileUpload;
 const set_password_template =require("../utils/set-password").resetPassword;
 const resetPassword = require("../utils/resetpassword").resetPassword;

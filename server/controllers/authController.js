@@ -6,7 +6,6 @@ const bcrypt = require('bcryptjs');
 const dotenv = require('dotenv');
 const sendEmail = require("../utils/send-email").sendEmail;
 const resetPassword = require("../utils/resetpassword").resetPassword;
-const set_password_template =require("../utils/set-password").resetPassword;
 dotenv.config();
 
 exports.login = async function (req, res) {

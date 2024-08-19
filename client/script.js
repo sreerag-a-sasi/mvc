@@ -73,10 +73,10 @@ async function handleForgot(event) {
     console.log("reseting password ...");
     let data = {
         email: document.getElementById('email').value,
-        // password: document.getElementById('password').value,
+        password: document.getElementById('password').value,
     };
     console.log("email :", email.value);
-    // console.log("password :", password.value);
+    console.log("password :", password.value);
 
 
     let json_data = JSON.stringify(data);
