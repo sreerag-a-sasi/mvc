@@ -9,9 +9,9 @@ dotenv.config();
 exports.access_control = async function (access_types, req, res, next) {
     try {
         console.log("reached access control....");
-        if(access_types === '*'){
+        if (access_types === "*") {
             next();
-        }
+        };
         const authHeader = req.headers['authorization'];
         console.log("authHeader  : ", authHeader);
         //validate if authHeader not found

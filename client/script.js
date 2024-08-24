@@ -70,13 +70,13 @@ async function handleSubmit(event) {
 
 async function handleForgot(event) {
     event.preventDefault();
-    console.log("reseting password ...");
+    // console.log("reseting password ...");
     let data = {
         email: document.getElementById('email').value,
-        password: document.getElementById('password').value,
+        // password: document.getElementById('password').value,
     };
     console.log("email :", email.value);
-    console.log("password :", password.value);
+    // console.log("password :", password.value);
 
 
     let json_data = JSON.stringify(data);
@@ -164,28 +164,6 @@ async function login(event) {
 }
 
 
-// async function details(event) { 
-//     // event.preventDefault();
-//     console.log("details");
-
-//     let response = await fetch('/details',{
-//         method : "GET",
-//         headers :  {
-//             'content-Type' : 'application/json'
-//         },
-// });
-// console.log("response: ", response);
-
-
-
-
-
-
-
-
-
-
-
 
 
 async function getLoginUserData() {
@@ -204,12 +182,6 @@ async function getLoginUserData() {
     if (response.ok) {
         const data = await response.json();
         console.log('User data:', data.data);
-
-
-
-
-
-
 
         let res = data.data;
         console.log("res : ", res.data);
@@ -246,4 +218,50 @@ async function getLoginUserData() {
     //Make a request to the server route or api with bearer token passed in req headers as authorization token
     //Get response (user datas)
     //Show datas
+}
+
+
+
+
+
+
+
+
+
+
+async function handlereset(event) {
+    event.preventDefault();
+    // console.log("reseting password ...");
+    let data = {
+        // email: document.getElementById('email').value,
+        password: document.getElementById('password').value,
+    };
+    // console.log("email :", email.value);
+    console.log("password :", password.value);
+
+
+    let json_data = JSON.stringify(data);
+
+    console.log("data : ", json_data);
+
+
+    let response = await fetch('/reset-password', {
+        method: "PATCH",
+        headers: {
+            'content-Type': 'application/json',
+        },
+        body: json_data,
+    });
+    console.log("response : ", response);
+
+    let parsed_response = await response.json();
+    console.log("parsed_response : ", parsed_response);
+
+    if (parsed_response.success) {
+        alert(parsed_response.message);
+        return;
+    } else {
+        alert(parsed_response.message);
+        return;
+    }
 }
