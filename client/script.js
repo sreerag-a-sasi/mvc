@@ -231,13 +231,13 @@ async function getLoginUserData() {
 
 async function handlereset(event) {
     event.preventDefault();
-    // console.log("reseting password ...");
+    console.log("reseting password ...");
     let data = {
         // email: document.getElementById('email').value,
         password: document.getElementById('password').value,
     };
     // console.log("email :", email.value);
-    console.log("password :", password.value);
+    console.log("password :",password.value);
 
 
     let json_data = JSON.stringify(data);
@@ -246,22 +246,25 @@ async function handlereset(event) {
 
 
     let response = await fetch('/reset-password', {
-        method: "PATCH",
+        method: 'PATCH',
         headers: {
-            'content-Type': 'application/json',
+            'Content-Type': 'application/json', 
         },
         body: json_data,
     });
+    
+
+
     console.log("response : ", response);
 
     let parsed_response = await response.json();
     console.log("parsed_response : ", parsed_response);
 
     if (parsed_response.success) {
-        alert(parsed_response.message);
+        // alert(parsed_response.message);
         return;
     } else {
-        alert(parsed_response.message);
+        // alert(parsed_response.message);
         return;
     }
 }

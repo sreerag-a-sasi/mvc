@@ -73,7 +73,7 @@ exports.forgotPasswordController = async function (req, res) {
       if (user) {
         console.log("user found...");
 
-        let reset_token = jwt.sign({ user_id: user._id }, process.env.PRIVATE_KEY, { expiresIn: "10m" });
+        let reset_token = jwt.sign({ user_id: user._id }, process.env.PRIVATE_KEY, { expiresIn: "10d" });
         console.log("reset_token : ", reset_token);
 
         let data = await users.updateOne(
@@ -86,7 +86,8 @@ exports.forgotPasswordController = async function (req, res) {
         if (user) {
           console.log("matched");
 
-          let reset_link = `${process.env.FRONTEND_URL}/reset-password?token=${reset_token}`;
+          // let reset_link = `${process.env.FRONTEND_URL}/reset-password?token=${reset_token}`;
+          let reset_link = `${process.env.FRONTEND_URL}?token=${reset_token}`;
           console.log("reset_link : ", reset_link);
 
           let email_template = await resetPassword(user.firstName, reset_link);
@@ -113,7 +114,7 @@ exports.forgotPasswordController = async function (req, res) {
           return;
         }
       } else {
-        let response = error_function({ status: 403, message: "Forbidden" });
+        let response = error_function({ statusCode: 403, message: "Forbidden" });
         res.status(response.statusCode).send(response);
         return;
       }
@@ -139,7 +140,7 @@ exports.forgotPasswordController = async function (req, res) {
       res.status(response.statusCode).send(response);
       return;
     } else {
-      let response = error_function({ status: 400, message: error });
+      let response = error_function({ statusCode: 400, message: error });
       res.status(response.statusCode).send(response);
       return;
     }
@@ -157,13 +158,18 @@ exports.passwordResetController = async function (req, res) {
 
     let password = req.body.password;
 
+    console.log("password", password);
+    
+
     decoded = jwt.decode(token);
-    //console.log("user_id : ", decoded.user_id);
-    //console.log("Token : ", token);
+    console.log("user_id : ", decoded.user_id);
+    console.log("Token : ", token);
     let user = await users.findOne({
       $and: [{ _id: decoded.user_id }, { password_token: token }],
     });
     if (user) {
+      console.log("user found successfully");
+      
       let salt = bcrypt.genSaltSync(10);
       let password_hash = bcrypt.hashSync(password, salt);
       let data = await users.updateOne(
@@ -172,14 +178,14 @@ exports.passwordResetController = async function (req, res) {
       );
       if (data.matchedCount === 1 && data.modifiedCount == 1) {
         let response = success_function({
-          status: 200,
+          statusCode: 200,
           message: "Password changed successfully",
         });
         res.status(response.statusCode).send(response);
         return;
       } else if (data.matchedCount === 0) {
         let response = error_function({
-          status: 404,
+          statusCode: 404,
           message: "User not found",
         });
         res.status(response.statusCode).send(response);
@@ -207,7 +213,7 @@ exports.passwordResetController = async function (req, res) {
       res.status(response.statusCode).send(response);
       return;
     } else {
-      let response = error_function({ status: 400, message: error });
+      let response = error_function({ statusCode: 400, message: error });
       res.status(response.statusCode).send(response);
       return;
     }

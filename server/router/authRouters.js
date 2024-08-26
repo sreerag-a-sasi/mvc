@@ -22,7 +22,7 @@ router.get('/test', (req,res) => {
 
 router.post('/login',authController.login);
 router.post('/forgot-password',authController.forgotPasswordController);
-router.patch('/reset-password', setAccessControl('*')  ,authController.passwordResetController);
+router.patch('/reset-password',authController.passwordResetController);
 // router.get('/details',authController.details);
 
 module.exports = router;
