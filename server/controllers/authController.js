@@ -149,7 +149,8 @@ exports.forgotPasswordController = async function (req, res) {
 
 
 
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 exports.passwordResetController = async function (req, res) {
   try {
@@ -157,26 +158,39 @@ exports.passwordResetController = async function (req, res) {
     const token = authHeader.split(" ")[1];
 
     let password = req.body.password;
-
-    console.log("password", password);
+    let data;
+    console.log("password :", password);
     
 
     decoded = jwt.decode(token);
     console.log("user_id : ", decoded.user_id);
     console.log("Token : ", token);
+    console.log("password_token:", token);
+    
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////
     let user = await users.findOne({
-      $and: [{ _id: decoded.user_id }, { password_token: token }],
+      $or: [{ _id: decoded.user_id }, { password_token: token }], ///some errors!!!
     });
+    console.log("user : ",user);
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
     if (user) {
       console.log("user found successfully");
       
       let salt = bcrypt.genSaltSync(10);
       let password_hash = bcrypt.hashSync(password, salt);
-      let data = await users.updateOne(
+
+     data = await users.updateOne(
         { _id: decoded.user_id },
         { $set: { password: password_hash, password_token: null } }
-      );
-      if (data.matchedCount === 1 && data.modifiedCount == 1) {
+      )};
+      console.log("data : ", data);
+      
+      if (user) {
         let response = success_function({
           statusCode: 200,
           message: "Password changed successfully",
@@ -192,21 +206,21 @@ exports.passwordResetController = async function (req, res) {
         return;
       } else {
         let response = error_function({
-          status: 400,
+          statusCode: 400,
           message: "Password reset failed",
         });
         res.status(response.statusCode).send(response);
         return;
       }
-    } else {
-      let response = error_function({ status: 403, message: "Forbidden" });
-      res.status(response.statusCode).send(response);
-      return;
-    }
+  //  else {
+  //     let response = error_function({ statusCode: 403, message: "Forbidden" });
+  //     res.status(response.statusCode).send(response);
+  //     return;
+  //   }
   } catch (error) {
-    if (process.env.NODE_ENV == "production") {
+    if (process.env.NODE_ENV == "development") {
       let response = error_function({
-        status: 400,
+        statusCode: 400,
         message: error ? error.message ? error.message : error : "Something went wrong",
       });
 
@@ -220,20 +234,5 @@ exports.passwordResetController = async function (req, res) {
   }
 };
 
-
-
-
-// exports.details = async function ( req, res) {
-//     try {
-//         req.body;
-
-//         let response = success_function({
-//             statusCode : 200,
-//             data : token,
-//             message : "Login successful",
-//         });
-//         return res.status(response.statusCode).send(response);
-//     } catch (error) {
-//         console.log("error : ",error);
-//     }
-// }
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////
