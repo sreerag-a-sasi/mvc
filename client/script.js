@@ -1,3 +1,44 @@
+async function login(event) {
+    event.preventDefault();
+    console.log("Login ...");
+
+    let datas = {
+        // email : 'bunny@gmail.com',
+        // password : 'bunny#123',
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value,
+    };
+
+    let json_datas = JSON.stringify(datas);
+
+    let response = await fetch('/login', {
+        method: "POST",
+        headers: {
+            'content-Type': 'application/json'
+        },
+        body: json_datas,
+    });
+    console.log("response : ", response);
+    
+    let parsed_response = await response.json();
+    console.log("parsed_response : ", parsed_response);
+
+    alert(parsed_response.message);
+
+    let token = parsed_response.data;
+    console.log("token : ", token.data);
+
+    if (parsed_response.success && token) {
+        localStorage.setItem('token', token.data);
+        window.location.href = "getDetails.html";
+        return;
+    } else {
+        alert(parsed_response.message);
+        return;
+    }
+}
+
+
 async function handleSubmit(event) {
     event.preventDefault();
 
@@ -63,11 +104,6 @@ async function handleSubmit(event) {
 }
 
 
-
-
-
-
-
 async function handleForgot(event) {
     event.preventDefault();
     // console.log("reseting password ...");
@@ -104,67 +140,6 @@ async function handleForgot(event) {
         return;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-async function login(event) {
-    event.preventDefault();
-    console.log("Login ...");
-
-    let datas = {
-        // email : 'bunny@gmail.com',
-        // password : 'bunny#123',
-        email: document.getElementById('email').value,
-        password: document.getElementById('password').value,
-    };
-
-    let json_datas = JSON.stringify(datas);
-
-    let response = await fetch('/login', {
-        method: "POST",
-        headers: {
-            'content-Type': 'application/json'
-        },
-        body: json_datas,
-    });
-    console.log("response : ", response);
-    
-    let parsed_response = await response.json();
-    console.log("parsed_response : ", parsed_response);
-
-    alert(parsed_response.message);
-
-    let token = parsed_response.data;
-    console.log("token : ", token.data);
-
-    if (parsed_response.success && token) {
-        localStorage.setItem('token', token.data);
-        window.location.href = "getDetails.html";
-        return;
-    } else {
-        alert(parsed_response.message);
-        return;
-    }
-}
-
-
-
 
 async function getLoginUserData() {
 
@@ -219,14 +194,6 @@ async function getLoginUserData() {
     //Get response (user datas)
     //Show datas
 }
-
-
-
-
-
-
-
-
 
 
 async function handlereset(event) {

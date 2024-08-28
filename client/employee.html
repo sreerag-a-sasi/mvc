@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Details</title>
+    <link rel="stylesheet" href="nav.css">
+    <link rel="html-page" href="index.html">
+    <link rel="stylesheet" href="style.css">
+    <link rel="html-page" href="forgot-password.html">
+</head>
+
+<body>
+    <div>
+        <nav>
+            <div class="wrapper">
+                <div class="logo"><a href="#">Login</a></div>
+                <ul class="nav-links">
+                    <li><a href="forgot-password.html">Forgot Password</a></li>
+                    <li><a href="index.html">Home</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="form">
+            <h1>Login</h1>
+            <form id="userLogin" onsubmit="return employee(event)">
+                <div><input type="email" placeholder="Enter The email :" name="email" id="email"></div>
+                <div><input type="password" placeholder="Enter The Password :" name="password" id="password" required>
+                </div>
+
+                <div><button type="submit" id="btn">Login</button></div>
+            </form>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

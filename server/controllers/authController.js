@@ -7,6 +7,9 @@ const dotenv = require('dotenv');
 const sendEmail = require("../utils/send-email").sendEmail;
 const resetPassword = require("../utils/resetpassword").resetPassword;
 
+
+
+
 dotenv.config();
 
 exports.login = async function (req, res) {
@@ -67,7 +70,6 @@ exports.forgotPasswordController = async function (req, res) {
     let email = req.body.email;
     console.log("email: ", email);
 
-
     if (email) {
       let user = await users.findOne({ email: email });
       if (user) {
@@ -81,7 +83,6 @@ exports.forgotPasswordController = async function (req, res) {
           // reset_token,
           { $set: { password_token: reset_token } }
         );
-
 
         if (user) {
           console.log("matched");
@@ -149,48 +150,28 @@ exports.forgotPasswordController = async function (req, res) {
 
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 exports.passwordResetController = async function (req, res) {
   try {
     const authHeader = req.headers["authorization"];
     const token = authHeader.split(" ")[1];
 
     let password = req.body.password;
-    let data;
-    console.log("password :", password);
-    
 
     decoded = jwt.decode(token);
     console.log("user_id : ", decoded.user_id);
     console.log("Token : ", token);
-    console.log("password_token:", token);
-    
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////
     let user = await users.findOne({
-      $or: [{ _id: decoded.user_id }, { password_token: token }], ///some errors!!!
+      $and: [{ _id: decoded.user_id }, { password_token: token }],
     });
-    console.log("user : ",user);
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
     if (user) {
-      console.log("user found successfully");
-      
       let salt = bcrypt.genSaltSync(10);
       let password_hash = bcrypt.hashSync(password, salt);
-
-     data = await users.updateOne(
+      let data = await users.updateOne(
         { _id: decoded.user_id },
         { $set: { password: password_hash, password_token: null } }
-      )};
-      console.log("data : ", data);
-      
-      if (user) {
+      );
+      if (data.matchedCount === 1 && data.modifiedCount === 1) {
         let response = success_function({
           statusCode: 200,
           message: "Password changed successfully",
@@ -199,7 +180,7 @@ exports.passwordResetController = async function (req, res) {
         return;
       } else if (data.matchedCount === 0) {
         let response = error_function({
-          statusCode: 404,
+          status: 404,
           message: "User not found",
         });
         res.status(response.statusCode).send(response);
@@ -212,16 +193,20 @@ exports.passwordResetController = async function (req, res) {
         res.status(response.statusCode).send(response);
         return;
       }
-  //  else {
-  //     let response = error_function({ statusCode: 403, message: "Forbidden" });
-  //     res.status(response.statusCode).send(response);
-  //     return;
-  //   }
+    } else {
+      let response = error_function({ statusCode: 403, message: "Forbidden" });
+      res.status(response.statusCode).send(response);
+      return;
+    }
   } catch (error) {
     if (process.env.NODE_ENV == "development") {
       let response = error_function({
         statusCode: 400,
-        message: error ? error.message ? error.message : error : "Something went wrong",
+        message: error
+          ? error.message
+            ? error.message
+            : error
+          : "Something went wrong",
       });
 
       res.status(response.statusCode).send(response);
@@ -233,6 +218,3 @@ exports.passwordResetController = async function (req, res) {
     }
   }
 };
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////
