@@ -3,8 +3,6 @@ async function login(event) {
     console.log("Login ...");
 
     let datas = {
-        // email : 'bunny@gmail.com',
-        // password : 'bunny#123',
         email: document.getElementById('email').value,
         password: document.getElementById('password').value,
     };
@@ -19,7 +17,7 @@ async function login(event) {
         body: json_datas,
     });
     console.log("response : ", response);
-    
+
     let parsed_response = await response.json();
     console.log("parsed_response : ", parsed_response);
 
@@ -196,42 +194,84 @@ async function getLoginUserData() {
 }
 
 
-async function handlereset(event) {
+// async function handlereset(event) {
+//     event.preventDefault();
+
+//     console.log("reseting password ...");
+
+//     let data = {
+//         password: document.getElementById('password').value,
+//     };
+//     console.log("password (front-end) :",password.value);
+
+//     let json_data = JSON.stringify(data);
+
+//     console.log("data (front-end) : ", json_data);
+
+//     let response = await fetch('/reset-password', {
+//         method: 'PATCH',
+//         headers: {
+//             'Content-Type': 'application/json', 
+//         },
+//         body: json_data,
+//     });
+
+//     console.log("response : ", response);
+
+//     let parsed_response = await response.json();
+//     console.log("parsed_response : ", parsed_response);
+
+//     if (parsed_response.success) {
+//         alert(parsed_response.message);
+//         return;
+//     } else {
+//         alert(parsed_response.message);
+//         return;
+//     }
+// }
+
+async function handleReset(event) {
     event.preventDefault();
-    console.log("reseting password ...");
-    let data = {
-        // email: document.getElementById('email').value,
-        password: document.getElementById('password').value,
+
+    console.log("Resetting password ...");
+
+    const currentUrl = window.location.href;
+    console.log("url front-end",currentUrl);
+
+
+    const passwordInput = document.getElementById('password');
+    const passwordValue = passwordInput.value;
+
+    const data = {
+        currentUrl,
+        password: passwordValue,
     };
-    // console.log("email :", email.value);
-    console.log("password :",password.value);
 
+    const json_data = JSON.stringify(data);
 
-    let json_data = JSON.stringify(data);
+    console.log("Data (front-end):", json_data);
 
-    console.log("data : ", json_data);
+    try {
+        const response = await fetch('/reset-password', {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: json_data,
+        });
 
+        console.log("Response:", response);
 
-    let response = await fetch('/reset-password', {
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json', 
-        },
-        body: json_data,
-    });
-    
+        const parsed_response = await response.json();
+        console.log("Parsed response:", parsed_response);
 
-
-    console.log("response : ", response);
-
-    let parsed_response = await response.json();
-    console.log("parsed_response : ", parsed_response);
-
-    if (parsed_response.success) {
-        // alert(parsed_response.message);
-        return;
-    } else {
-        // alert(parsed_response.message);
-        return;
+        if (parsed_response.success) {
+            alert(parsed_response.message);
+        } else {
+            alert(parsed_response.message);
+        }
+    } catch (error) {
+        console.error("Error during password reset:", error);
+        // Handle the error (e.g., display an error message to the user)
     }
 }

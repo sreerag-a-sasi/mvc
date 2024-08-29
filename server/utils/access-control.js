@@ -62,7 +62,7 @@ exports.access_control = async function (access_types, req, res, next) {
                         let user = await users.findOne({ _id: user_id }).populate('user_type');
                         console.log("user :", user);
 
-                        let user_type = user.user_type.user_type;
+                        let user_type = user.user_type;
                         console.log("user_type : ", user_type);
 
                         // let usertype = user_types.user_type;
@@ -83,7 +83,7 @@ exports.access_control = async function (access_types, req, res, next) {
 
                             //allowed user_types
                             let allowed = access_types.split(',').map((e) => control_data[e]);
-                            console.log("allowed : ", allowed);
+                            console.log("allowed : type ", allowed);
 
                             if (user && allowed.includes(user_type)) {
                                 console.log("allowed user...")
