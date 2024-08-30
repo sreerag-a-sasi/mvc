@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const dotenv = require('dotenv');
 const { log } = require('console');
+const user_types = require('../db/models/user_types');
 const sendEmail = require("../utils/send-email").sendEmail;
 const resetPassword = require("../utils/resetpassword").resetPassword;
 
@@ -21,6 +22,9 @@ exports.login = async function (req, res) {
     let password = req.body.password;
     console.log("password : ", password);
 
+    // let user_type = req.body.user_type;
+    // console.log("user type ac : ", user_type);
+    
     //validate email and password
 
     //checking user credentials 
