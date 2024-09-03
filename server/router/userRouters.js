@@ -18,7 +18,7 @@ router.post('/users',setAccessControl('1'), userController.addUser);
 router.put('/users/:id', setAccessControl('1'), userController.updateUser);
 router.get('/users', setAccessControl('1'), userController.getUser);
 router.delete('/users', setAccessControl('1'), userController.deleteUser);
-router.get('/users/:id',setAccessControl('*'), userController.uniqueUser);
+router.get('/users/:id',setAccessControl('1,2'), userController.uniqueUser);
 // router.get('/login',userController.getUser);
 
 module.exports = router;

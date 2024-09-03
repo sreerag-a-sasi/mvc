@@ -194,42 +194,6 @@ async function getLoginUserData() {
 }
 
 
-// async function handlereset(event) {
-//     event.preventDefault();
-
-//     console.log("reseting password ...");
-
-//     let data = {
-//         password: document.getElementById('password').value,
-//     };
-//     console.log("password (front-end) :",password.value);
-
-//     let json_data = JSON.stringify(data);
-
-//     console.log("data (front-end) : ", json_data);
-
-//     let response = await fetch('/reset-password', {
-//         method: 'PATCH',
-//         headers: {
-//             'Content-Type': 'application/json', 
-//         },
-//         body: json_data,
-//     });
-
-//     console.log("response : ", response);
-
-//     let parsed_response = await response.json();
-//     console.log("parsed_response : ", parsed_response);
-
-//     if (parsed_response.success) {
-//         alert(parsed_response.message);
-//         return;
-//     } else {
-//         alert(parsed_response.message);
-//         return;
-//     }
-// }
-
 async function handleReset(event) {
     event.preventDefault();
 

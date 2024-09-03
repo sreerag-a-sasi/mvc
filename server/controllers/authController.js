@@ -8,10 +8,6 @@ const { log } = require('console');
 const user_types = require('../db/models/user_types');
 const sendEmail = require("../utils/send-email").sendEmail;
 const resetPassword = require("../utils/resetpassword").resetPassword;
-
-
-
-
 dotenv.config();
 
 exports.login = async function (req, res) {
