@@ -239,3 +239,44 @@ async function handleReset(event) {
         // Handle the error (e.g., display an error message to the user)
     }
 }
+
+
+
+
+
+async function handleReset(event) {
+    event.preventDefault();
+
+    console.log("Resetting password ...");
+
+    const data = {
+        _id,
+    };
+
+    const json_data = JSON.stringify(data);
+
+    console.log("Data (front-end):", json_data);
+
+    try {
+        const response = await fetch('/updateUser', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: json_data,
+        });
+
+        console.log("Response:", response);
+
+        const parsed_response = await response.json();
+        console.log("Parsed response:", parsed_response);
+
+        if (parsed_response.success) {
+            alert(parsed_response.message);
+        } else {
+            alert(parsed_response.message);
+        }
+    } catch (error) {
+        console.error("Error during password reset:", error);
+        }
+}
