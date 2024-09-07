@@ -139,7 +139,7 @@ async function handleForgot(event) {
     }
 }
 
-async function getLoginUserData() {
+async function getUsersData() {
 
     const token = localStorage.getItem('token'); // Retrieve the token
     console.log("Access token : ", token);
@@ -176,9 +176,7 @@ async function getLoginUserData() {
                   <td><input class="in" type="text" id='name-${res.data[i]._id}' value="${firstName}" disabled="true" placeholder="name"></td>
                   <td><input class="in" type="text" id='username-${res.data[i]._id}' value="${lastName}" disabled=true placeholder="username"></td>
                   <td><input class="in" type="email" id='email-${res.data[i]._id}' value="${email}" disabled=true></td>
-                  <td><button class="btn" onclick= "handleEdit('${res.data[i]._id}')">Edit</button></td>
-                  <td><button class="btn" onclick= "handleSave('${res.data[i]._id}')">Save</button></td>
-                  <td><button class="btn" onclick= "remove('${res.data[i]._id}')">remove user</button></td>
+                  <td><button onclick="handleView('${res.data[i]._id}')">View</button></td>
         </tr>
             `;
         }
@@ -193,6 +191,77 @@ async function getLoginUserData() {
     //Show datas
 }
 
+// function handleView(id) {
+//     console.log("id : ", id);
+
+
+
+
+//     //Redirect to view page
+//     //And pass id as search params
+//     //Create another function to load single user data for view page (call in onload event of view page)
+//     //Get the id from search params in this function
+//     //Load datas using the id (req and res)
+//     //Place datas in html
+// }
+
+function handleView(id) {
+    console.log("id : ", id);
+
+    // Redirect to view page and pass id as search params
+    window.location.href = `userPage.html?id=${id}`;
+}
+
+// Function to load single user data for view page
+async function loadUserData() {
+    // // Get the id from search params
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+    console.log(id);
+    if (id) {
+        try {
+            const token = localStorage.getItem('token'); // Retrieve the token
+            console.log("Access token : ", token);
+            // Make an HTTP request to get user data
+            let response = await fetch(`users/${id}`, {
+                method: "GET",
+                headers: {
+                    'content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            let data = await response.json();
+            console.log("user data : ", data.data);
+            
+
+
+            
+            
+            
+
+
+            // Check if data.data exists and has the expected properties
+            if (data) {
+                console.log("firstname :", data.data.data.firstName);
+                document.getElementById('firstName').value = data.data.data.firstName || 'null';
+                document.getElementById('lastName').value = data.data.data.lastName || '';
+                document.getElementById('email').value = data.data.data.email || '';
+                document.getElementById('profilepic').src = data.data.data.image || 'images/admin.png';
+            } else {
+                console.error('Unexpected data structure:', data);
+            }
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+        }
+    } else {
+        console.error('No ID found in search params');
+    }
+}
+
+// Call loadUserData on page load
+// window.onload = loadUserData;
+
+
 
 async function handleReset(event) {
     event.preventDefault();
@@ -200,7 +269,7 @@ async function handleReset(event) {
     console.log("Resetting password ...");
 
     const currentUrl = window.location.href;
-    console.log("url front-end",currentUrl);
+    console.log("url front-end", currentUrl);
 
 
     const passwordInput = document.getElementById('password');
@@ -278,5 +347,5 @@ async function handleReset(event) {
         }
     } catch (error) {
         console.error("Error during password reset:", error);
-        }
+    }
 }

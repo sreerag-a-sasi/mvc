@@ -84,11 +84,12 @@ exports.access_control = async function (access_types, req, res, next) {
                             //allowed user_types
                             let allowed = access_types.split(',').map((e) => control_data[e]);
                             console.log("allowed : type ", allowed);
+                            console.log("user_type : ", user_type);
 
-                            if (user && allowed.includes(user_type)) {
+                            if (user && allowed.includes(user_type.user_type)) {
                                 console.log("allowed user...")
                                 next(); //jump to next middleware
-                            } else if (!allowed.includes(user_type)) {
+                            } else if (!allowed.includes(user_type.user_type)) {
                                 let response = error_function({
                                     statusCode: 400,
                                     message: "Not allowed",
