@@ -1,3 +1,7 @@
+body{
+    background-color: bisque;
+    height: auto;
+}
 .content{
     display: flex;
     flex-wrap: wrap;
@@ -43,6 +47,11 @@ input {
 .edit{
     margin: auto 5px;
     display: flex;
+    justify-content: center;
+    background-color: black;
+    margin: 20px 0px;
+    border-radius: 10px;
+    padding: 10px;
 }
 .edit>div>img{
     margin: 5px;

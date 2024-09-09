@@ -232,14 +232,6 @@ async function loadUserData() {
             });
             let data = await response.json();
             console.log("user data : ", data.data);
-            
-
-
-            
-            
-            
-
-
             // Check if data.data exists and has the expected properties
             if (data) {
                 console.log("firstname :", data.data.data.firstName);
@@ -313,39 +305,87 @@ async function handleReset(event) {
 
 
 
-async function handleReset(event) {
+// async function handleReset(event) {
+//     event.preventDefault();
+
+//     console.log("Resetting password ...");
+
+//     const data = {
+//         _id,
+//     };
+
+//     const json_data = JSON.stringify(data);
+
+//     console.log("Data (front-end):", json_data);
+
+//     try {
+//         const response = await fetch('/updateUser', {
+//             method: 'PUT',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//             body: json_data,
+//         });
+
+//         console.log("Response:", response);
+
+//         const parsed_response = await response.json();
+//         console.log("Parsed response:", parsed_response);
+
+//         if (parsed_response.success) {
+//             alert(parsed_response.message);
+//         } else {
+//             alert(parsed_response.message);
+//         }
+//     } catch (error) {
+//         console.error("Error during password reset:", error);
+//     }
+// }
+
+
+async function handledit(event) {
     event.preventDefault();
+    console.log("editing is working...");
 
-    console.log("Resetting password ...");
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+    console.log(id);
 
-    const data = {
-        _id,
-    };
+    // const data = {
+    //     firstName,
+    //     lastName,
+    //     email,
+    // };
 
-    const json_data = JSON.stringify(data);
+    // const json_data = JSON.stringify(data);
 
-    console.log("Data (front-end):", json_data);
+    // console.log("Data (front-end):", json_data);
 
-    try {
-        const response = await fetch('/updateUser', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: json_data,
-        });
+    // try {
+    //     const token = localStorage.getItem('token'); // Retrieve the token
+    //     console.log("Access token : ", token);
 
-        console.log("Response:", response);
 
-        const parsed_response = await response.json();
-        console.log("Parsed response:", parsed_response);
+    //     const response = await fetch('updateUser', {
+    //         method: 'PUT',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             'Authorization': `Bearer ${token}`
+    //         },
+    //         body: json_data,
+    //     });
 
-        if (parsed_response.success) {
-            alert(parsed_response.message);
-        } else {
-            alert(parsed_response.message);
-        }
-    } catch (error) {
-        console.error("Error during password reset:", error);
-    }
+    //     console.log("Response:", response);
+
+    //     const parsed_response = await response.json();
+    //     console.log("Parsed response:", parsed_response);
+
+    //     if (parsed_response.success) {
+    //         alert(parsed_response.message);
+    //     } else {
+    //         alert(parsed_response.message);
+    //     }
+    // } catch (error) {
+    //     console.error("Error during editing :", error);
+    // }
 }
