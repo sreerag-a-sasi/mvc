@@ -50,15 +50,12 @@ async function handleSubmit(event) {
         firstName: document.getElementById('firstName').value,
         lastName: document.getElementById('lastName').value,
         email: document.getElementById('email').value,
-        // password: document.getElementById('password').value,
     };
 
 
     console.log("firstname :", firstName.value);
     console.log("lastname :", lastName.value);
     console.log("email :", email.value);
-    // console.log("password :", password.value);
-
 
     let json_data = JSON.stringify(data);
 
@@ -100,6 +97,67 @@ async function handleSubmit(event) {
 
 
 }
+
+// async function handleSubmit(event) {
+//     event.preventDefault();
+
+//     const token = localStorage.getItem('token');
+//     if (!token) {
+//         alert("You must be logged in to continue this process.");
+//         return;
+//     }
+
+//     const firstName = document.getElementById('firstName').value;
+//     const lastName = document.getElementById('lastName').value;
+//     const email = document.getElementById('email').value;
+//     const imageFile = document.getElementById('imageUpload').files[0];
+
+//     if (!imageFile) {
+//         alert("Please select an image to upload.");
+//         return;
+//     }
+
+//     const reader = new FileReader();
+//     reader.onloadend = async function() {
+//         const base64String = reader.result.replace('data:', '').replace(/^.+,/, '');
+
+//         let data = {
+//             firstName: firstName,
+//             lastName: lastName,
+//             email: email,
+//             image: base64String
+//         };
+
+//         let json_data = JSON.stringify(data);
+
+//         console.log("data: ", json_data);
+
+//         let response = await fetch('/users', {
+//             method: "POST",
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 'Authorization': `Bearer ${token}`
+//             },
+//             body: json_data,
+//         });
+
+//         console.log("response: ", response);
+
+//         let parsed_response = await response.json();
+//         console.log("parsed_response: ", parsed_response);
+
+//         if (parsed_response.success) {
+//             alert(parsed_response.message);
+//         } else {
+//             alert(parsed_response.message);
+//         }
+//     };
+
+//     reader.readAsDataURL(imageFile);
+// }
+
+// document.getElementById('uploadForm').addEventListener('submit', handleSubmit);
+
 
 
 async function handleForgot(event) {
@@ -175,7 +233,7 @@ async function getUsersData() {
         <tr>
                   <td><input class="in" type="text" id='name-${res.data[i]._id}' value="${firstName}" disabled="true" placeholder="name"></td>
                   <td><input class="in" type="text" id='username-${res.data[i]._id}' value="${lastName}" disabled=true placeholder="username"></td>
-                  <td><input class="in" type="email" id='email-${res.data[i]._id}' value="${email}" disabled=true></td>
+                  <td><input class="in" type="email" id='email-${res.data[i]._id}' value="${email}" disabled=true placeholder="email"></td>
                   <td><button onclick="handleView('${res.data[i]._id}')">View</button></td>
         </tr>
             `;
@@ -191,19 +249,6 @@ async function getUsersData() {
     //Show datas
 }
 
-// function handleView(id) {
-//     console.log("id : ", id);
-
-
-
-
-//     //Redirect to view page
-//     //And pass id as search params
-//     //Create another function to load single user data for view page (call in onload event of view page)
-//     //Get the id from search params in this function
-//     //Load datas using the id (req and res)
-//     //Place datas in html
-// }
 
 function handleView(id) {
     console.log("id : ", id);
@@ -249,9 +294,6 @@ async function loadUserData() {
         console.error('No ID found in search params');
     }
 }
-
-// Call loadUserData on page load
-// window.onload = loadUserData;
 
 
 
@@ -302,47 +344,6 @@ async function handleReset(event) {
 }
 
 
-
-
-
-// async function handleReset(event) {
-//     event.preventDefault();
-
-//     console.log("Resetting password ...");
-
-//     const data = {
-//         _id,
-//     };
-
-//     const json_data = JSON.stringify(data);
-
-//     console.log("Data (front-end):", json_data);
-
-//     try {
-//         const response = await fetch('/updateUser', {
-//             method: 'PUT',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//             },
-//             body: json_data,
-//         });
-
-//         console.log("Response:", response);
-
-//         const parsed_response = await response.json();
-//         console.log("Parsed response:", parsed_response);
-
-//         if (parsed_response.success) {
-//             alert(parsed_response.message);
-//         } else {
-//             alert(parsed_response.message);
-//         }
-//     } catch (error) {
-//         console.error("Error during password reset:", error);
-//     }
-// }
-
-
 async function handledit(event) {
     event.preventDefault();
     console.log("editing is working...");
@@ -351,41 +352,44 @@ async function handledit(event) {
     const id = urlParams.get('id');
     console.log(id);
 
-    // const data = {
-    //     firstName,
-    //     lastName,
-    //     email,
-    // };
-
-    // const json_data = JSON.stringify(data);
-
-    // console.log("Data (front-end):", json_data);
-
-    // try {
-    //     const token = localStorage.getItem('token'); // Retrieve the token
-    //     console.log("Access token : ", token);
+    const token = localStorage.getItem('token');
+    console.log("token : ",token);
+    
+    if (!token) {
+        alert("you must be logged in to continue this process..");
+        return;
+    }
+    let data = {
+        firstName: document.getElementById('firstName').value,
+        lastName: document.getElementById('lastName').value,
+    };
 
 
-    //     const response = await fetch('updateUser', {
-    //         method: 'PUT',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'Authorization': `Bearer ${token}`
-    //         },
-    //         body: json_data,
-    //     });
+    console.log("firstname :", firstName.value);
+    console.log("lastname :", lastName.value);
 
-    //     console.log("Response:", response);
+    let json_data = JSON.stringify(data);
 
-    //     const parsed_response = await response.json();
-    //     console.log("Parsed response:", parsed_response);
+    console.log("data : ", json_data);
 
-    //     if (parsed_response.success) {
-    //         alert(parsed_response.message);
-    //     } else {
-    //         alert(parsed_response.message);
-    //     }
-    // } catch (error) {
-    //     console.error("Error during editing :", error);
-    // }
+    let response = await fetch(`users/${id}`, {
+        method: "PUT",
+        headers: {
+            'content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: json_data,
+    });
+    console.log("response : ", response);
+
+    let parsed_response = await response.json();
+    console.log("parsed_response : ", parsed_response);
+
+    if (parsed_response.success) {
+        alert(parsed_response.message);
+        return;
+    } else {
+        alert(parsed_response.message);
+        return;
+    }
 }

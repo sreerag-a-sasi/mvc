@@ -20,7 +20,6 @@ exports.addUser = async function (req, res) {
         let firstName = req.body.firstName;
         let lastName = req.body.lastName;
         let email = req.body.email;
-        // let password = req.body.password;
         let image = req.body.image;
 /////////////////////////////////////////////////////////////////////////////////
 
