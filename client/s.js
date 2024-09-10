@@ -46,3 +46,64 @@
 //     // Call loadUserData on page load
 //     window.onload = loadUserData;
 //     }
+
+
+async function handleSubmit(event) {
+    event.preventDefault();
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+        alert("You must be logged in to continue this process.");
+        return;
+    }
+
+    const firstName = document.getElementById('firstName').value;
+    const lastName = document.getElementById('lastName').value;
+    const email = document.getElementById('email').value;
+    const imageFile = document.getElementById('imageUpload').files[0];
+
+    if (!imageFile) {
+        alert("Please select an image to upload.");
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = async function() {
+        const base64String = reader.result.replace('data:', '').replace(/^.+,/, '');
+
+        let data = {
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            image: base64String
+        };
+
+        let json_data = JSON.stringify(data);
+
+        console.log("data: ", json_data);
+
+        let response = await fetch('/users', {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: json_data,
+        });
+
+        console.log("response: ", response);
+
+        let parsed_response = await response.json();
+        console.log("parsed_response: ", parsed_response);
+
+        if (parsed_response.success) {
+            alert(parsed_response.message);
+        } else {
+            alert(parsed_response.message);
+        }
+    };
+
+    reader.readAsDataURL(imageFile);
+}
+
+document.getElementById('uploadForm').addEventListener('submit', handleSubmit);
