@@ -55,3 +55,16 @@ nav .wrapper {
 .nav-links li a:hover {
   background: #3A3B3C;
 }
+
+input{
+  width: 200px;
+  height: 40px;
+  border-radius: 999px;
+  padding-left: 10px;
+  background-color: #525557;
+  border: 2px solid white;
+}
+input:hover{
+  background-color: white;
+  border: 2px solid greenyellow;
+}

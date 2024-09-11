@@ -201,30 +201,30 @@ exports.updateUser = async function (req, res) {
 
 
 
-exports.getUser = async function (req, res) {
-    try {
-        const data = await users.find({});
-        console.log("data : ", data);
-        const json_data = JSON.stringify(data);
-        console.log("json_data : ", json_data);
-        if (data) {
-            let response = success_function({
-                statusCode: 201,
-                data: data,
-                message: "all users found",
-            });
-            return res.status(response.statusCode).send(response);
-        }
-    } catch (error) {
-        console.log("error : ", error);
-        //return res.status(400).send("failed");
-        let response = error_function({
-            statusCode: 400,
-            message: "something went wrong",
-        });
-        return res.status(response.statusCode).send(response);
-    }
-}
+// exports.getUser = async function (req, res) {
+//     try {
+//         const data = await users.find({});
+//         // console.log("data : ", data);
+//         const json_data = JSON.stringify(data);
+//         // console.log("json_data : ", json_data);
+//         if (data) {
+//             let response = success_function({
+//                 statusCode: 201,
+//                 data: data,
+//                 message: "all users found",
+//             });
+//             return res.status(response.statusCode).send(response);
+//         }
+//     } catch (error) {
+//         console.log("error : ", error);
+//         //return res.status(400).send("failed");
+//         let response = error_function({
+//             statusCode: 400,
+//             message: "something went wrong",
+//         });
+//         return res.status(response.statusCode).send(response);
+//     }
+// }
 
 
 
@@ -318,3 +318,65 @@ exports.uniqueUser = async function (req, res) {
 }
 
 
+
+exports.getUser = async function (req, res) {
+    try {  
+
+      let keyword = req.query.keyword;
+      console.log("keyword : ", keyword);
+      
+      let filters = [];
+  
+      if (keyword) {
+        filters.push({
+          $or: [
+            { "firstName": { $regex: keyword, $options: "i" } },
+            { "lastName": { $regex: keyword, $options: "i" } }
+          ],
+        });
+      }
+      console.log("filter object : ",filters);
+      
+
+      let users_data = await users
+        .find(filters.length > 0 ? { $and: filters } : null)
+        .sort({_id : -1})
+  
+      if (users_data) {
+
+        let response = success_function({
+          statusCode: 200,
+          data: users_data,
+          message: "Users fetched successfully",
+        });
+  
+        res.status(response.statusCode).send(response);
+        return;
+      } else {
+        let response = error_function({
+          statusCode: 404,
+          message: "User data not found",
+        });
+        res.status(response.statusCode).send(response);
+        return;
+      }
+    } catch (error) {
+      if (process.env.NODE_ENV == "development") {
+        let response = error_function({
+          statusCode: 400,
+          message: error
+            ? error.message
+              ? error.message
+              : error
+            : "Something went wrong",
+        });
+  
+        res.status(response.statusCode).send(response);
+        return;
+      } else {
+        let response = error_function({ status: 400, message: error });
+        res.status(response.statusCode).send(response);
+        return;
+      }
+    }
+  };

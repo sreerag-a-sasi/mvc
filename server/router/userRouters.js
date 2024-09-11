@@ -19,6 +19,7 @@ router.put('/users/:id', setAccessControl('1'), userController.updateUser);
 router.get('/users', setAccessControl('1'), userController.getUser);
 router.delete('/users', setAccessControl('1'), userController.deleteUser);
 router.get('/users/:id',setAccessControl('1,2'), userController.uniqueUser);
+// router.get('/users',setAccessControl('1'), userController.fetchAll);
 // router.get('/login',userController.getUser);
 
 module.exports = router;

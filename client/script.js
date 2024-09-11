@@ -283,7 +283,7 @@ async function loadUserData() {
                 document.getElementById('firstName').value = data.data.data.firstName || 'null';
                 document.getElementById('lastName').value = data.data.data.lastName || '';
                 document.getElementById('email').value = data.data.data.email || '';
-                document.getElementById('profilepic').src = data.data.data.image || 'images/admin.png';
+                document.getElementById('profilepic').src = data.data.data.image || 'images/user.png';
             } else {
                 console.error('Unexpected data structure:', data);
             }

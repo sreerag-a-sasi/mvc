@@ -8,12 +8,12 @@ dotenv.config();
 
 exports.access_control = async function (access_types, req, res, next) {
     try {
-        console.log("reached access control....");
+        // console.log("reached access control....");
         if (access_types === "*") {
             next();
         };
         const authHeader = req.headers['authorization'];
-        console.log("authHeader  : ", authHeader);
+        // console.log("authHeader  : ", authHeader);
         //validate if authHeader not found
         if (!authHeader) {
             let response = error_function({
@@ -24,7 +24,7 @@ exports.access_control = async function (access_types, req, res, next) {
         }
 
         const headerArr = authHeader.split(' ');
-        console.log("headerArr :", headerArr);
+        // console.log("headerArr :", headerArr);
 
         //validate if header array contains no elements
         if (headerArr.length < 1) {
@@ -36,7 +36,7 @@ exports.access_control = async function (access_types, req, res, next) {
         }
 
         let token = headerArr[1];
-        console.log("token :", token);
+        // console.log("token :", token);
 
         //validating token
         if (!token || token == '' || token == null || token == undefined || token == 'null' || token == 'undefined') {
@@ -55,15 +55,15 @@ exports.access_control = async function (access_types, req, res, next) {
                     return res.status(response.statusCode).send(response);
                 } else {
                     let user_id = decoded.user_id;
-                    console.log("user_id : ", user_id);
+                    // console.log("user_id : ", user_id);
                     req.body.user_id = user_id;//Writing request to add user_id decoded from token (ie login user id)
 
                     if (user_id) {
                         let user = await users.findOne({ _id: user_id }).populate('user_type');
-                        console.log("user :", user);
+                        // console.log("user :", user);
 
                         let user_type = user.user_type;
-                        console.log("user_type : ", user_type);
+                        // console.log("user_type : ", user_type);
 
                         // let usertype = user_types.user_type;
                         // console.log(usertype);
@@ -83,11 +83,11 @@ exports.access_control = async function (access_types, req, res, next) {
 
                             //allowed user_types
                             let allowed = access_types.split(',').map((e) => control_data[e]);
-                            console.log("allowed : type ", allowed);
-                            console.log("user_type : ", user_type);
+                            // console.log("allowed : type ", allowed);
+                            // console.log("user_type : ", user_type);
 
                             if (user && allowed.includes(user_type.user_type)) {
-                                console.log("allowed user...")
+                                // console.log("allowed user...")
                                 next(); //jump to next middleware
                             } else if (!allowed.includes(user_type.user_type)) {
                                 let response = error_function({
