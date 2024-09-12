@@ -31,10 +31,10 @@
       padding-left: 20px;
     }
 
-    button.btn {
+    #viewbutton {
       margin: 0px auto;
       width: 100%;
-      min-width: 100px;
+      min-width: 80px;
       height: 40px;
       border: 2px solid red;
       border-radius: 10px;
@@ -48,20 +48,18 @@
     <div class="wrapper">
       <div class="logo"><a href="#">Details</a></div>
       <ul class="nav-links">
-        <li><input type="text" placeholder="search" onchange="finduser()"></li>
+        <li><input type="text" placeholder="search" onkeyup="finduser()" id="searchbar"></li>
         <li><a href="#">Log out</a></li>
         <li><a href="admin.html">Create New</a></li>
       </ul>
     </div>
   </nav>
   <table>
-    <!-- <div><button type="submit" id="btn" onsubmit="return details()">Login</button></div> -->
     <thead>
       <tr>
         <th>First-Name</th>
         <th>Last-Name</th>
         <th>email</th>
-        <!-- <th>password</th> -->
       </tr>
     </thead>
     <tbody id="dataContainer"></tbody>

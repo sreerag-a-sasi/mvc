@@ -234,7 +234,7 @@ async function getUsersData() {
                   <td><input class="in" type="text" id='name-${res.data[i]._id}' value="${firstName}" disabled="true" placeholder="name"></td>
                   <td><input class="in" type="text" id='username-${res.data[i]._id}' value="${lastName}" disabled=true placeholder="username"></td>
                   <td><input class="in" type="email" id='email-${res.data[i]._id}' value="${email}" disabled=true placeholder="email"></td>
-                  <td><button onclick="handleView('${res.data[i]._id}')">View</button></td>
+                  <td><button onclick="handleView('${res.data[i]._id}')" id="viewbutton">View</button></td>
         </tr>
             `;
         }
@@ -392,4 +392,147 @@ async function handledit(event) {
         alert(parsed_response.message);
         return;
     }
+}
+
+
+async function handledelete(event) {
+    event.preventDefault();
+    console.log("deleting is working...");
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+    console.log(id);
+
+    const token = localStorage.getItem('token');
+    console.log("token : ", token);
+
+    if (!token) {
+        alert("You must be logged in to continue this process.");
+        return;
+    }
+
+    let response = await fetch(`users/${id}`, {
+        method: "DELETE",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    });
+    console.log("response : ", response);
+
+    let parsed_response = await response.json();
+    console.log("parsed_response : ", parsed_response);
+
+    if (parsed_response.success) {
+        alert(parsed_response.message);
+        window.location.href = 'getdetails.html'; // Redirect to getdetails.html
+        return;
+    } else {
+        alert(parsed_response.message);
+        return;
+    }
+}
+
+
+
+// async function finduser(event) {
+//     event.preventDefault();
+
+//     console.log("keyword function is working...");
+    
+//     let data = {
+//         keyword : document.getElementById('searchbar').value,
+//     };
+
+
+//     console.log("searchbar data :", keyword.value);
+
+//     let json_data = JSON.stringify(data);
+
+//     console.log("data : ", json_data);
+
+//     let response = await fetch(`users/${keyword}}`, {
+//         method: "GET",
+//         headers: {
+//             'content-Type': 'application/json',
+//         },
+//         body: json_data,
+//     });
+//     console.log("response : ", response);
+
+//     let parsed_response = await response.json();
+//     console.log("parsed_response : ", parsed_response);
+
+//     if (parsed_response.success) {
+//         alert(parsed_response.message);
+//         return;
+//     } else {
+//         alert(parsed_response.message);
+//         return;
+//     }
+    
+// }
+
+async function finduser() {
+    // event.preventDefault();
+
+    console.log("keyword function is working...");
+
+    let keyword = document.getElementById('searchbar').value;
+
+    console.log("searchbar data :", keyword);
+
+    const token = localStorage.getItem('token');
+    console.log("token : ",token);
+
+    let response = await fetch(`users?keyword=${encodeURIComponent(keyword)}`, {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+    console.log("response : ", response);
+
+    // let parsed_response = await response.json();
+    // console.log("parsed_response : ", parsed_response);
+    if (response.ok) {
+        const data = await response.json();
+        console.log('User data:', data.data);
+
+        let res = data.data;
+        console.log("res : ", res.data);
+
+        let dataContainer = document.getElementById("dataContainer");
+
+        let rows = '';
+        firstName1 = res.data[0].firstName;
+
+        for (let i = 0; i < res.data.length; i++) {
+            let firstName = res.data[i].firstName ? res.data[i].firstName : "Null";
+            let lastName = res.data[i].lastName ? res.data[i].lastName : "Null";
+            let email = res.data[i].email ? res.data[i].email : "Null";
+            // let password = res.data[i].password ?res.data[i].password : "Null";
+            rows =
+                rows +
+                `
+        <tr>
+                  <td><input class="in" type="text" id='name-${res.data[i]._id}' value="${firstName}" disabled="true" placeholder="name"></td>
+                  <td><input class="in" type="text" id='username-${res.data[i]._id}' value="${lastName}" disabled=true placeholder="username"></td>
+                  <td><input class="in" type="email" id='email-${res.data[i]._id}' value="${email}" disabled=true placeholder="email"></td>
+                  <td><button onclick="handleView('${res.data[i]._id}')" id="viewbutton">View</button></td>
+        </tr>
+            `;
+        }
+        console.log("rows : ", rows);
+        dataContainer.innerHTML = rows;
+    }
+
+    if (response.success) {
+        console.log(parsed_response.message);
+    } else {
+        console.log(response.message);
+    }
+    
 }

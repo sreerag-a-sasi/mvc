@@ -265,11 +265,6 @@ exports.deleteUser = async function (req, res) {
 
 
 
-
-
-
-
-
 exports.uniqueUser = async function (req, res) {
     try {
 
@@ -323,7 +318,7 @@ exports.getUser = async function (req, res) {
     try {  
 
       let keyword = req.query.keyword;
-      console.log("keyword : ", keyword);
+    //   console.log("keyword : ", keyword);
       
       let filters = [];
   
@@ -335,12 +330,12 @@ exports.getUser = async function (req, res) {
           ],
         });
       }
-      console.log("filter object : ",filters);
+    //   console.log("filter object : ",filters);
       
 
       let users_data = await users
         .find(filters.length > 0 ? { $and: filters } : null)
-        .sort({_id : -1})
+        .sort({_id : +1})
   
       if (users_data) {
 
@@ -374,7 +369,7 @@ exports.getUser = async function (req, res) {
         res.status(response.statusCode).send(response);
         return;
       } else {
-        let response = error_function({ status: 400, message: error });
+        let response = error_function({ statusCode: 400, message: error });
         res.status(response.statusCode).send(response);
         return;
       }

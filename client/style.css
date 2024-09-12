@@ -20,8 +20,19 @@ input {
     border: 1px solid red;
     border-radius: 8px;
     padding-left: 20px;
+    justify-content: center;
+}
+input#imageUpload{
+    padding-top: 8px;
 }
 button {
+    width: 150px;
+    height: 30px;
+    border: 0px;
+    border-radius: 10px;
+    background-color: #57ef83;
+}
+#viewbutton {
     width: 150px;
     height: 30px;
     border: 0px;
