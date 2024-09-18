@@ -66,6 +66,27 @@ exports.login = async function (req, res) {
 
 
 
+
+exports.logout = async function (req, res) {
+  try {
+    // Assuming you are using JWT tokens stored in cookies
+    res.clearCookie('token'); // Clear the token cookie
+    let response = {
+      statusCode: 200,
+      message: "Logout successful",
+    };
+    return res.status(response.statusCode).send(response);
+  } catch (error) {
+    console.log("error : ", error);
+    let response = {
+      statusCode: 500,
+      message: "Logout failed",
+    };
+    return res.status(response.statusCode).send(response);
+  }
+};
+
+
 exports.forgotPasswordController = async function (req, res) {
   try {
     let email = req.body.email;

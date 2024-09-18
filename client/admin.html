@@ -17,7 +17,7 @@
         <a href="#">Admin</a>
       </div>
       <ul class="nav-links">
-        <li><a href="login.html">Log out</a></li>
+        <li><a href="login.html" onclick="logout()">Log out</a></li>
         <!-- <li><a href="#">Create New</a></li> -->
         <li><a href="getDetails.html">Get Details</a></li>
       </ul>
@@ -25,11 +25,11 @@
   </nav>
   <div class="form">
     <h1>Add New Employee</h1>
-    <form id="userDataForm" onsubmit="return handleSubmit(event)">
+    <form id="userDataForm" onsubmit=" handleSubmit(event)">
       <div><input type="text" placeholder="Enter The First Name :" name="firstname" id="firstName"></div>
       <div><input type="text" placeholder="Enter The Last Name :" name="lastname" id="lastName"></div>
       <div><input type="email" placeholder="Enter The email :" name="email" id="email"></div>
-      <div><input type="file" id="imageUpload" name="image" accept="image/*" id="image" placeholder="image"></div>
+      <div><input type="file" id="image" name="image" accept="image/*" id="image" placeholder="image"></div>
       <div><button type="submit" id="btn">Add</button></div>
     </form>
   </div>

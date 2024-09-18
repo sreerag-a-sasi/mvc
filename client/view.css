@@ -35,6 +35,7 @@ input {
     /* padding: 20px; */
     margin: 20px;
     align-items: center;
+    object-fit: cover;
     justify-content: center;
     border: 4px solid white;
 }

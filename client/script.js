@@ -36,129 +36,103 @@ async function login(event) {
     }
 }
 
-
 async function handleSubmit(event) {
-    event.preventDefault();
 
-    const token = localStorage.getItem('token');
-    if (!token) {
-        alert("you must be logged in to continue this process..");
-        return;
+    try {
+        event.preventDefault();
+        console.log("From add user...");
+
+        let firstName = document.getElementById('firstName').value;
+        console.log("firstName : ", firstName);
+
+        let lastName = document.getElementById('lastName').value;
+        console.log("lastName : ", lastName);
+
+        let email = document.getElementById('email').value;
+        console.log("email : ", email);
+
+        let image = document.getElementById('image');
+        console.log("image : ", image);
+
+        let img_file = image.files[0];
+        console.log("img_file : ", img_file);
+
+        let base64_img = '';
+
+        if (img_file) {
+            const reader = new FileReader();
+            console.log("reader : ", reader);
+
+            reader.readAsDataURL(img_file);
+
+            reader.onload = function (e) {
+                console.log("on onload ...");
+                let result = e.target.result;
+                console.log("result : ", result);
+
+                base64_img = result;
+                submitForm();
+            }
+
+            reader.onerror = function (error) {
+                console.log("Error reading file : ", error);
+            }
+
+        }
+
+
+        async function submitForm() {
+
+            let datas = {
+                firstName,
+                lastName,
+                email,
+                image: base64_img,
+            }
+
+            let json_datas = JSON.stringify(datas);
+            console.log("json_datas : ", json_datas);
+
+            let token = localStorage.getItem('token');
+            console.log("token : ", token);
+
+            let response = await fetch('http://localhost:3000/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': "application/json",
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: json_datas,
+            });
+
+            let parsed_response = await response.json();
+            console.log("parsed_response : ", parsed_response);
+
+            if (parsed_response.success) {
+                alert(`${parsed_response.message}`);
+                return;
+            } else {
+                let message = parsed_response.message;
+                if (message) {
+                    alert(message);
+                    return;
+                } else {
+                    alert("Login Failed");
+                    return;
+                }
+            }
+
+        }
+
+
+
+
+    } catch (error) {
+        console.log("error : ", error);
     }
-    console.log("new ...");
-    let data = {
-        firstName: document.getElementById('firstName').value,
-        lastName: document.getElementById('lastName').value,
-        email: document.getElementById('email').value,
-    };
-
-
-    console.log("firstname :", firstName.value);
-    console.log("lastname :", lastName.value);
-    console.log("email :", email.value);
-
-    let json_data = JSON.stringify(data);
-
-    console.log("data : ", json_data);
-
-
-    let response = await fetch('/users', {
-        method: "POST",
-        headers: {
-            'content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        },
-        body: json_data,
-    });
-    console.log("response : ", response);
-
-    let parsed_response = await response.json();
-    console.log("parsed_response : ", parsed_response);
-
-    if (parsed_response.success) {
-        alert(parsed_response.message);
-        return;
-    } else {
-        alert(parsed_response.message);
-        return;
-    }
-
-    //Validate this datas
-
-    //Convert this to an object
-
-    //Convert this object to json
-
-    //Send this json via request to express server (post req)
-
-    //Take response
-
-    //Display response
 
 
 }
-
-// async function handleSubmit(event) {
-//     event.preventDefault();
-
-//     const token = localStorage.getItem('token');
-//     if (!token) {
-//         alert("You must be logged in to continue this process.");
-//         return;
-//     }
-
-//     const firstName = document.getElementById('firstName').value;
-//     const lastName = document.getElementById('lastName').value;
-//     const email = document.getElementById('email').value;
-//     const imageFile = document.getElementById('imageUpload').files[0];
-
-//     if (!imageFile) {
-//         alert("Please select an image to upload.");
-//         return;
-//     }
-
-//     const reader = new FileReader();
-//     reader.onloadend = async function() {
-//         const base64String = reader.result.replace('data:', '').replace(/^.+,/, '');
-
-//         let data = {
-//             firstName: firstName,
-//             lastName: lastName,
-//             email: email,
-//             image: base64String
-//         };
-
-//         let json_data = JSON.stringify(data);
-
-//         console.log("data: ", json_data);
-
-//         let response = await fetch('/users', {
-//             method: "POST",
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 'Authorization': `Bearer ${token}`
-//             },
-//             body: json_data,
-//         });
-
-//         console.log("response: ", response);
-
-//         let parsed_response = await response.json();
-//         console.log("parsed_response: ", parsed_response);
-
-//         if (parsed_response.success) {
-//             alert(parsed_response.message);
-//         } else {
-//             alert(parsed_response.message);
-//         }
-//     };
-
-//     reader.readAsDataURL(imageFile);
-// }
-
-// document.getElementById('uploadForm').addEventListener('submit', handleSubmit);
-
-
 
 async function handleForgot(event) {
     event.preventDefault();
@@ -353,8 +327,8 @@ async function handledit(event) {
     console.log(id);
 
     const token = localStorage.getItem('token');
-    console.log("token : ",token);
-    
+    console.log("token : ", token);
+
     if (!token) {
         alert("you must be logged in to continue this process..");
         return;
@@ -362,6 +336,7 @@ async function handledit(event) {
     let data = {
         firstName: document.getElementById('firstName').value,
         lastName: document.getElementById('lastName').value,
+        image: document.getElementById('image').value,
     };
 
 
@@ -439,7 +414,7 @@ async function handledelete(event) {
 //     event.preventDefault();
 
 //     console.log("keyword function is working...");
-    
+
 //     let data = {
 //         keyword : document.getElementById('searchbar').value,
 //     };
@@ -470,7 +445,7 @@ async function handledelete(event) {
 //         alert(parsed_response.message);
 //         return;
 //     }
-    
+
 // }
 
 async function finduser() {
@@ -483,7 +458,7 @@ async function finduser() {
     console.log("searchbar data :", keyword);
 
     const token = localStorage.getItem('token');
-    console.log("token : ",token);
+    console.log("token : ", token);
 
     let response = await fetch(`users?keyword=${encodeURIComponent(keyword)}`, {
         method: "GET",
@@ -534,5 +509,28 @@ async function finduser() {
     } else {
         console.log(response.message);
     }
-    
+
+}
+
+
+
+function logout() {
+    fetch('/logout', {
+        method: 'GET',
+        credentials: 'include' // Include cookies in the request
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.statusCode === 200) {
+                clearConsole();
+                window.location.href = '/index.html'; // Redirect to login page after logout
+            } else {
+                alert('Logout failed');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+function clearConsole() {
+    console.clear();
 }
