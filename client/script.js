@@ -134,6 +134,105 @@ async function handleSubmit(event) {
 
 }
 
+
+async function getUsersData() {
+    
+    const token = localStorage.getItem('token'); // Retrieve the token
+    console.log("Access token : ", token);
+    //get token from localstorage
+    let response = await fetch('/users', {
+        method: "GET",
+        headers: {
+            'content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+    });
+    
+    if (response.ok) {
+        const data = await response.json();
+        console.log('User data:', data.data);
+        
+        let res = data.data;
+        console.log("res : ", res.data);
+        
+        let dataContainer = document.getElementById("dataContainer");
+        
+        let rows = '';
+        firstName1 = res.data[0].firstName;
+        
+        for (let i = 0; i < res.data.length; i++) {
+            let firstName = res.data[i].firstName ? res.data[i].firstName : "Null";
+            let lastName = res.data[i].lastName ? res.data[i].lastName : "Null";
+            let email = res.data[i].email ? res.data[i].email : "Null";
+            // let password = res.data[i].password ?res.data[i].password : "Null";
+            rows =
+            rows +
+            `
+            <tr>
+            <td><input class="in" type="text" id='name-${res.data[i]._id}' value="${firstName}" disabled="true" placeholder="name"></td>
+            <td><input class="in" type="text" id='username-${res.data[i]._id}' value="${lastName}" disabled=true placeholder="username"></td>
+            <td><input class="in" type="email" id='email-${res.data[i]._id}' value="${email}" disabled=true placeholder="email"></td>
+            <td><button onclick="handleView('${res.data[i]._id}')" id="viewbutton">View</button></td>
+            </tr>
+            `;
+        }
+        console.log("rows : ", rows);
+        dataContainer.innerHTML = rows;
+    } else {
+        console.error('Error fetching user data:', response.status);
+    }
+    // console.log("response : ", JSON.stringify(response));
+    //Make a request to the server route or api with bearer token passed in req headers as authorization token
+    //Get response (user datas)
+    //Show datas
+}
+
+
+function handleView(id) {
+    console.log("id : ", id);
+    
+    // Redirect to view page and pass id as search params
+    window.location.href = `userPage.html?id=${id}`;
+}
+
+// Function to load single user data for view page
+async function loadUserData() {
+    // // Get the id from search params
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+    console.log(id);
+    if (id) {
+        try {
+            const token = localStorage.getItem('token'); // Retrieve the token
+            console.log("Access token : ", token);
+            // Make an HTTP request to get user data
+            let response = await fetch(`users/${id}`, {
+                method: "GET",
+                headers: {
+                    'content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            let data = await response.json();
+            console.log("user data : ", data.data);
+            // Check if data.data exists and has the expected properties
+            if (data) {
+                console.log("firstname :", data.data.data.firstName);
+                document.getElementById('firstName').value = data.data.data.firstName || 'null';
+                document.getElementById('lastName').value = data.data.data.lastName || 'null';
+                document.getElementById('email').value = data.data.data.email || 'null';
+                document.getElementById('profilepic').src = data.data.data.image || 'images/user.png';
+            } else {
+                console.error('Unexpected data structure:', data);
+            }
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+        }
+    } else {
+        console.error('No ID found in search params');
+    }
+}
+
 async function handleForgot(event) {
     event.preventDefault();
     // console.log("reseting password ...");
@@ -171,109 +270,10 @@ async function handleForgot(event) {
     }
 }
 
-async function getUsersData() {
-
-    const token = localStorage.getItem('token'); // Retrieve the token
-    console.log("Access token : ", token);
-    //get token from localstorage
-    let response = await fetch('/users', {
-        method: "GET",
-        headers: {
-            'content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        },
-    });
-
-    if (response.ok) {
-        const data = await response.json();
-        console.log('User data:', data.data);
-
-        let res = data.data;
-        console.log("res : ", res.data);
-
-        let dataContainer = document.getElementById("dataContainer");
-
-        let rows = '';
-        firstName1 = res.data[0].firstName;
-
-        for (let i = 0; i < res.data.length; i++) {
-            let firstName = res.data[i].firstName ? res.data[i].firstName : "Null";
-            let lastName = res.data[i].lastName ? res.data[i].lastName : "Null";
-            let email = res.data[i].email ? res.data[i].email : "Null";
-            // let password = res.data[i].password ?res.data[i].password : "Null";
-            rows =
-                rows +
-                `
-        <tr>
-                  <td><input class="in" type="text" id='name-${res.data[i]._id}' value="${firstName}" disabled="true" placeholder="name"></td>
-                  <td><input class="in" type="text" id='username-${res.data[i]._id}' value="${lastName}" disabled=true placeholder="username"></td>
-                  <td><input class="in" type="email" id='email-${res.data[i]._id}' value="${email}" disabled=true placeholder="email"></td>
-                  <td><button onclick="handleView('${res.data[i]._id}')" id="viewbutton">View</button></td>
-        </tr>
-            `;
-        }
-        console.log("rows : ", rows);
-        dataContainer.innerHTML = rows;
-    } else {
-        console.error('Error fetching user data:', response.status);
-    }
-    // console.log("response : ", JSON.stringify(response));
-    //Make a request to the server route or api with bearer token passed in req headers as authorization token
-    //Get response (user datas)
-    //Show datas
-}
-
-
-function handleView(id) {
-    console.log("id : ", id);
-
-    // Redirect to view page and pass id as search params
-    window.location.href = `userPage.html?id=${id}`;
-}
-
-// Function to load single user data for view page
-async function loadUserData() {
-    // // Get the id from search params
-    const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get('id');
-    console.log(id);
-    if (id) {
-        try {
-            const token = localStorage.getItem('token'); // Retrieve the token
-            console.log("Access token : ", token);
-            // Make an HTTP request to get user data
-            let response = await fetch(`users/${id}`, {
-                method: "GET",
-                headers: {
-                    'content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            let data = await response.json();
-            console.log("user data : ", data.data);
-            // Check if data.data exists and has the expected properties
-            if (data) {
-                console.log("firstname :", data.data.data.firstName);
-                document.getElementById('firstName').value = data.data.data.firstName || 'null';
-                document.getElementById('lastName').value = data.data.data.lastName || '';
-                document.getElementById('email').value = data.data.data.email || '';
-                document.getElementById('profilepic').src = data.data.data.image || 'images/user.png';
-            } else {
-                console.error('Unexpected data structure:', data);
-            }
-        } catch (error) {
-            console.error('Error fetching user data:', error);
-        }
-    } else {
-        console.error('No ID found in search params');
-    }
-}
-
-
 
 async function handleReset(event) {
     event.preventDefault();
-
+    
     console.log("Resetting password ...");
 
     const currentUrl = window.location.href;
@@ -333,41 +333,67 @@ async function handledit(event) {
         alert("you must be logged in to continue this process..");
         return;
     }
-    let data = {
-        firstName: document.getElementById('firstName').value,
-        lastName: document.getElementById('lastName').value,
-        image: document.getElementById('image').value,
-    };
 
+    let firstName = document.getElementById('firstName').value;
+    let lastName = document.getElementById('lastName').value;
+    let image = document.getElementById('image');
+    let img_file = image.files[0];
+    let base64_img = '';
 
-    console.log("firstname :", firstName.value);
-    console.log("lastname :", lastName.value);
+    if (img_file) {
+        const reader = new FileReader();
+        console.log("reader : ", reader);
 
-    let json_data = JSON.stringify(data);
+        reader.readAsDataURL(img_file);
 
-    console.log("data : ", json_data);
+        reader.onload = async function (e) {
+            console.log("on onload ...");
+            let result = e.target.result;
+            console.log("result : ", result);
 
-    let response = await fetch(`users/${id}`, {
-        method: "PUT",
-        headers: {
-            'content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        },
-        body: json_data,
-    });
-    console.log("response : ", response);
+            base64_img = result;
+            await submitEditForm();
+        }
 
-    let parsed_response = await response.json();
-    console.log("parsed_response : ", parsed_response);
-
-    if (parsed_response.success) {
-        alert(parsed_response.message);
-        return;
+        reader.onerror = function (error) {
+            console.log("Error reading file : ", error);
+        }
     } else {
-        alert(parsed_response.message);
-        return;
+        await submitEditForm();
+    }
+
+    async function submitEditForm() {
+        let data = {
+            firstName,
+            lastName,
+            image: base64_img,
+        };
+
+        let json_data = JSON.stringify(data);
+        console.log("json_data : ", json_data);
+
+        let response = await fetch(`http://localhost:3000/users/${id}`, {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: json_data,
+        });
+
+        let parsed_response = await response.json();
+        console.log("parsed_response : ", parsed_response);
+
+        if (parsed_response.success) {
+            
+            alert(parsed_response.message);
+            loadUserData();
+        } else {
+            alert(parsed_response.message);
+        }
     }
 }
+
 
 
 async function handledelete(event) {
@@ -410,46 +436,7 @@ async function handledelete(event) {
 
 
 
-// async function finduser(event) {
-//     event.preventDefault();
-
-//     console.log("keyword function is working...");
-
-//     let data = {
-//         keyword : document.getElementById('searchbar').value,
-//     };
-
-
-//     console.log("searchbar data :", keyword.value);
-
-//     let json_data = JSON.stringify(data);
-
-//     console.log("data : ", json_data);
-
-//     let response = await fetch(`users/${keyword}}`, {
-//         method: "GET",
-//         headers: {
-//             'content-Type': 'application/json',
-//         },
-//         body: json_data,
-//     });
-//     console.log("response : ", response);
-
-//     let parsed_response = await response.json();
-//     console.log("parsed_response : ", parsed_response);
-
-//     if (parsed_response.success) {
-//         alert(parsed_response.message);
-//         return;
-//     } else {
-//         alert(parsed_response.message);
-//         return;
-//     }
-
-// }
-
 async function finduser() {
-    // event.preventDefault();
 
     console.log("keyword function is working...");
 
@@ -488,7 +475,6 @@ async function finduser() {
             let firstName = res.data[i].firstName ? res.data[i].firstName : "Null";
             let lastName = res.data[i].lastName ? res.data[i].lastName : "Null";
             let email = res.data[i].email ? res.data[i].email : "Null";
-            // let password = res.data[i].password ?res.data[i].password : "Null";
             rows =
                 rows +
                 `

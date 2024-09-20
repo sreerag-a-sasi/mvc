@@ -4,7 +4,7 @@ const users = require('../db/models/users');
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 const fileUpload = require('../utils/file-upload').fileUpload;
-const set_password_template =require("../utils/set-password").resetPassword;
+const set_password_template = require("../utils/set-password").resetPassword;
 const resetPassword = require("../utils/resetpassword").resetPassword;
 const sendEmail = require("../utils/send-email").sendEmail;
 
@@ -21,7 +21,7 @@ exports.addUser = async function (req, res) {
         let lastName = req.body.lastName;
         let email = req.body.email;
         let image = req.body.image;
-/////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -47,7 +47,7 @@ exports.addUser = async function (req, res) {
         let password = randomPassword;
 
 
-/////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////
 
         // console.log("firstname : ", firstName);
         // console.log("lastname : ", lastName);
@@ -100,23 +100,23 @@ exports.addUser = async function (req, res) {
             });
 
             if (new_user) {
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 console.log("REAched here ...");
-                    let email_template = await set_password_template(
-                        firstName,
-                        email,
-                        password
-                    );
+                let email_template = await set_password_template(
+                    firstName,
+                    email,
+                    password
+                );
 
-                    let send = await sendEmail(email, "Update Password", email_template);
-
-
+                let send = await sendEmail(email, "Update Password", email_template);
 
 
-                    //send response
-                    // message = message + " and login details send to official email";
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                //send response
+                // message = message + " and login details send to official email";
+
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////////
                 let response = success_function({
                     statusCode: 201,
                     data: new_user,
@@ -154,14 +154,24 @@ exports.updateUser = async function (req, res) {
         let firstName = req.body.firstName;
         let lastName = req.body.lastName;
         let email = req.body.email;
+        let image = req.body.image;
 
         const count = await users.countDocuments({ email: req.body.email });
         console.log(`Number of documents with the same email: ${count}`);
+
+
+        let img_path;
+        if (image && image !== "removed") {
+            img_path = await fileUpload(image, "users");
+        }
+        console.log("img_path : ", img_path);
+
 
         const update_datas = ({
             firstName,
             lastName,
             email,
+            image: img_path,
         });
         //save to database
 
@@ -315,63 +325,63 @@ exports.uniqueUser = async function (req, res) {
 
 
 exports.getUser = async function (req, res) {
-    try {  
+    try {
 
-      let keyword = req.query.keyword;
-    //   console.log("keyword : ", keyword);
-      
-      let filters = [];
-  
-      if (keyword) {
-        filters.push({
-          $or: [
-            { "firstName": { $regex: keyword, $options: "i" } },
-            { "lastName": { $regex: keyword, $options: "i" } }
-          ],
-        });
-      }
-    //   console.log("filter object : ",filters);
-      
+        let keyword = req.query.keyword;
+        //   console.log("keyword : ", keyword);
 
-      let users_data = await users
-        .find(filters.length > 0 ? { $and: filters } : null)
-        .sort({_id : +1})
-  
-      if (users_data) {
+        let filters = [];
 
-        let response = success_function({
-          statusCode: 200,
-          data: users_data,
-          message: "Users fetched successfully",
-        });
-  
-        res.status(response.statusCode).send(response);
-        return;
-      } else {
-        let response = error_function({
-          statusCode: 404,
-          message: "User data not found",
-        });
-        res.status(response.statusCode).send(response);
-        return;
-      }
+        if (keyword) {
+            filters.push({
+                $or: [
+                    { "firstName": { $regex: keyword, $options: "i" } },
+                    { "lastName": { $regex: keyword, $options: "i" } }
+                ],
+            });
+        }
+        //   console.log("filter object : ",filters);
+
+
+        let users_data = await users
+            .find(filters.length > 0 ? { $and: filters } : null)
+            .sort({ _id: +1 })
+
+        if (users_data) {
+
+            let response = success_function({
+                statusCode: 200,
+                data: users_data,
+                message: "Users fetched successfully",
+            });
+
+            res.status(response.statusCode).send(response);
+            return;
+        } else {
+            let response = error_function({
+                statusCode: 404,
+                message: "User data not found",
+            });
+            res.status(response.statusCode).send(response);
+            return;
+        }
     } catch (error) {
-      if (process.env.NODE_ENV == "development") {
-        let response = error_function({
-          statusCode: 400,
-          message: error
-            ? error.message
-              ? error.message
-              : error
-            : "Something went wrong",
-        });
-  
-        res.status(response.statusCode).send(response);
-        return;
-      } else {
-        let response = error_function({ statusCode: 400, message: error });
-        res.status(response.statusCode).send(response);
-        return;
-      }
+        if (process.env.NODE_ENV == "development") {
+            let response = error_function({
+                statusCode: 400,
+                message: error
+                    ? error.message
+                        ? error.message
+                        : error
+                    : "Something went wrong",
+            });
+
+            res.status(response.statusCode).send(response);
+            return;
+        } else {
+            let response = error_function({ statusCode: 400, message: error });
+            res.status(response.statusCode).send(response);
+            return;
+        }
     }
-  };
+};
