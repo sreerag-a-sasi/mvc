@@ -20,6 +20,8 @@ async function login(event) {
 
     let parsed_response = await response.json();
     console.log("parsed_response : ", parsed_response);
+    console.log("data : ",parsed_response.data);
+    console.log("data2 : ",parsed_response.data.data);
 
     alert(parsed_response.message);
 
