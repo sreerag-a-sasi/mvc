@@ -5,7 +5,9 @@ const dotenv = require('dotenv');
 dotenv.config();
 const userRoutes = require('./router/userRouters');
 const authRoutes = require('./router/authRouters');
+const cors = require('cors');
 
+app.use(cors());
 
 //database connectiongffgfdafds fdfgdgffds 123456 7891011122345
 conn();//Some update 11111
