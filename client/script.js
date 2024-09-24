@@ -20,16 +20,16 @@ async function login(event) {
 
     let parsed_response = await response.json();
     console.log("parsed_response : ", parsed_response);
-    console.log("data : ",parsed_response.data);
-    console.log("data2 : ",parsed_response.data.data);
+    // console.log("data : ",parsed_response.data);
+    // console.log("data2 : ",parsed_response.data.data);
 
     alert(parsed_response.message);
 
     let token = parsed_response.data;
-    console.log("token : ", token.data);
+    console.log("token : ", token);
 
     if (parsed_response.success && token) {
-        localStorage.setItem('token', token.data);
+        localStorage.setItem('token', token);
         window.location.href = "getDetails.html";
         return;
     } else {
@@ -98,7 +98,7 @@ async function handleSubmit(event) {
             let token = localStorage.getItem('token');
             console.log("token : ", token);
 
-            let response = await fetch('http://localhost:3000/users', {
+            let response = await fetch('/users', {
                 method: 'POST',
                 headers: {
                     'Content-Type': "application/json",
@@ -149,18 +149,20 @@ async function getUsersData() {
             'Authorization': `Bearer ${token}`
         },
     });
+    // let parsed_response = await response.json();
+    // console.log("response :",parsed_response);
     
-    if (response.ok) {
+    if (response) {
         const data = await response.json();
-        console.log('User data:', data.data);
+        console.log('User data:', data);
         
-        let res = data.data;
-        console.log("res : ", res.data);
+        let res = data;
+        console.log("res : ", res);
         
         let dataContainer = document.getElementById("dataContainer");
         
         let rows = '';
-        firstName1 = res.data[0].firstName;
+        firstName = res.data[0].firstName;
         
         for (let i = 0; i < res.data.length; i++) {
             let firstName = res.data[i].firstName ? res.data[i].firstName : "Null";
@@ -181,7 +183,8 @@ async function getUsersData() {
         console.log("rows : ", rows);
         dataContainer.innerHTML = rows;
     } else {
-        console.error('Error fetching user data:', response.status);
+
+        // console.log('Error fetching user data:', response.json());
     }
     // console.log("response : ", JSON.stringify(response));
     //Make a request to the server route or api with bearer token passed in req headers as authorization token
@@ -219,11 +222,11 @@ async function loadUserData() {
             console.log("user data : ", data.data);
             // Check if data.data exists and has the expected properties
             if (data) {
-                console.log("firstname :", data.data.data.firstName);
-                document.getElementById('firstName').value = data.data.data.firstName || 'null';
-                document.getElementById('lastName').value = data.data.data.lastName || 'null';
-                document.getElementById('email').value = data.data.data.email || 'null';
-                document.getElementById('profilepic').src = data.data.data.image || 'images/user.png';
+                console.log("firstname :", data.data.firstName);
+                document.getElementById('firstName').value = data.data.firstName || 'null';
+                document.getElementById('lastName').value = data.data.lastName || 'null';
+                document.getElementById('email').value = data.data.email || 'null';
+                document.getElementById('profilepic').src = data.data.image || 'images/user.png';
             } else {
                 console.error('Unexpected data structure:', data);
             }

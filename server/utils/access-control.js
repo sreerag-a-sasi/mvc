@@ -36,12 +36,12 @@ exports.access_control = async function (access_types, req, res, next) {
         }
 
         let token = headerArr[1];
-        // console.log("token :", token);
+        console.log("token :", token);
 
         //validating token
         if (!token || token == '' || token == null || token == undefined || token == 'null' || token == 'undefined') {
             let response = error_function({
-                statuscode: 400,
+                statusCode: 400,
                 message: "Please login to continue",
             });
             return res.status(response.statusCode).send(response);
